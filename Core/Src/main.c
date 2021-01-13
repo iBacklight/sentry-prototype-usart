@@ -117,6 +117,7 @@ int main(void)
   buzzer_init();
 
 
+
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -398,7 +399,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOF_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOG, LD_A_Pin|LD_B_Pin|LD_C_Pin|LD_D_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOG, LD_A_Pin|LD_B_Pin|LD_C_Pin|LD_D_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOG, LD_E_Pin|LD_F_Pin|LD_G_Pin|LD_H_Pin, GPIO_PIN_RESET);

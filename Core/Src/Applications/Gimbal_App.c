@@ -13,13 +13,14 @@ void Gimbal_Task_Function(void const * argument)
 
   /* USER CODE BEGIN Gimbal_Task_Function */
   /* Infinite loop */
-	buzzer_play_chromatic(100);
-	buzzer_play_o_canada(100);
+	//buzzer_play_chromatic(100);
+
+	//buzzer_play_o_canada(200);
 
   for(;;)
   {
 	  HAL_GPIO_TogglePin(LD_C_GPIO_Port, LD_C_Pin);
-	  osDelay(1000);
+	  osDelay(500);
 	  osDelay(1);
   }
   /* USER CODE END Gimbal_Task_Function */
