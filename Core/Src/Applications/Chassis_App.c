@@ -2,7 +2,6 @@
 #include "Chassis_App.h"
 
 
-
 /**
 * @brief Function implementing the Chassis_Task thread.
 * @param argument: Not used
@@ -13,7 +12,7 @@ void Chassis_Task_Func(void const * argument)
 {
 
   /* USER CODE BEGIN Chassis_Task_Func */
-	buzzer_play_mario(200);
+	//buzzer_play_mario(200);
   /* Infinite loop */
   for(;;)
   {

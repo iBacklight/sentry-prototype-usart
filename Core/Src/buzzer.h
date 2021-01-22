@@ -18,4 +18,6 @@ void buzzer_play_chromatic(int32_t duration);
 void buzzer_play_o_canada(int32_t bpm);
 void buzzer_play_mario(int32_t bpm);
 
+
+void buzzer_play_c1(int32_t duration);
 #endif /* SRC_BUZZER_H_ */

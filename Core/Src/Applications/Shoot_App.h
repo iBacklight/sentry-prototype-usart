@@ -11,6 +11,7 @@
 
 #include "main.h"
 #include "cmsis_os.h"
+#include "../buzzer.h"
 void Shoot_Task_Func(void const * argument);
 
 #endif /* SRC_APPLICATIONS_SHOOT_APP_H_ */
