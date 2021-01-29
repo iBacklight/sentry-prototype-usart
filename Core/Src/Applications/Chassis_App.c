@@ -16,7 +16,7 @@ void Chassis_Task_Func(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-	HAL_GPIO_TogglePin(LD_B_GPIO_Port,LD_B_Pin);
+	printf("\nWelcome to RM-EE\n");
     osDelay(500);
     osDelay(1);
   }

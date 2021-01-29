@@ -9,6 +9,7 @@
 #define SRC_APPLICATIONS_GIMBAL_APP_H_
 
 #include "main.h"
+#include "can.h"
 #include "cmsis_os.h"
 #include "../buzzer.h"
 void Gimbal_Task_Function(void const * argument);

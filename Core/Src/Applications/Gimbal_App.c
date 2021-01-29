@@ -11,6 +11,7 @@ static uint8_t chassis_can_send_data[8];
 static CAN_TxHeaderTypeDef  chassis_tx_message;
 
 extern CAN_HandleTypeDef hcan1;
+extern UART_HandleTypeDef huart7;
 
 void Gimbal_Task_Function(void const * argument)
 {
@@ -28,11 +29,13 @@ void Gimbal_Task_Function(void const * argument)
 
   for(;;)
   {
-	  //HAL_GPIO_TogglePin(LD_C_GPIO_Port, LD_C_Pin);
+	  HAL_GPIO_TogglePin(LD_C_GPIO_Port, LD_C_Pin);
 	  CAN_Send_Gimbal(7500,0);
 
+
+
 	  //osDelay(500);
-	  osDelay(1);
+	  osDelay(3);
   }
   /* USER CODE END Gimbal_Task_Function */
 }
@@ -54,7 +57,9 @@ void CAN_Send_Gimbal(int16_t yaw_raw, int16_t pitch_raw)
     chassis_can_send_data[6] = 0;
     chassis_can_send_data[7] = 0;
 
+
     HAL_CAN_AddTxMessage(&hcan1, &chassis_tx_message, chassis_can_send_data, &send_mail_box);
+
 
 //    if (check==HAL_OK){
 //    	buzzer_play_f1(1000);
