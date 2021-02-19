@@ -7,6 +7,9 @@
 
 #include "Gimbal_App.h"
 
+
+
+
 static uint8_t chassis_can_send_data[8];
 static CAN_TxHeaderTypeDef  chassis_tx_message;
 
@@ -14,6 +17,7 @@ extern CAN_HandleTypeDef hcan1;
 extern UART_HandleTypeDef huart7;
 
 
+uint8_t can_rx_buffer[8];
 
 void Gimbal_Task_Function(void const * argument)
 {
@@ -32,7 +36,7 @@ void Gimbal_Task_Function(void const * argument)
   for(;;)
   {
 	  HAL_GPIO_TogglePin(LD_C_GPIO_Port, LD_C_Pin);
-	  CAN_Send_Gimbal(7500,0);
+	  CAN_Send_Gimbal(3000,0);
 
 
 
@@ -45,8 +49,8 @@ void Gimbal_Task_Function(void const * argument)
 void CAN_Send_Gimbal(int16_t yaw_raw, int16_t pitch_raw)
 {
     uint32_t send_mail_box;
-    //chassis_tx_message.StdId = 0x200;  // 3508
-	chassis_tx_message.StdId = 0x1FF;  // gimbal
+    chassis_tx_message.StdId = 0x200;  // 3508
+	//chassis_tx_message.StdId = 0x1FF;  // gimbal
     chassis_tx_message.IDE = CAN_ID_STD;
     chassis_tx_message.RTR = CAN_RTR_DATA;
     chassis_tx_message.DLC = 0x08;
@@ -117,7 +121,10 @@ void can_filter_disable(CAN_HandleTypeDef* hcan){
 
 //This function activates whenever the RxFifo receives a message persumably? But it doesnt seem to work right now
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
-	HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
+	CAN_RxHeaderTypeDef rx_header;
+	rx_header.StdId = (CAN_RI0R_STID & hcan->Instance->sFIFOMailBox[CAN_RX_FIFO0].RIR) >> CAN_TI0R_STID_Pos;
+	HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, can_rx_buffer);
+	//HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
 	//HAL_Delay(1000);
 }
 
@@ -125,7 +132,12 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	if(GPIO_Pin == Button_Pin){
 		//can_filter_enable(&hcan1);
-		HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
+		can_filter_enable(&hcan1);
+		uint8_t motorStatus[8];
+		memcpy(motorStatus, can_rx_buffer,8);
+
+
+		//HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
 
 
 		printf("\n======== 6020 DATA REPORT ========\r\n"
@@ -134,12 +146,12 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	             "Current      %d\r\n"
 	             "Speed        %d\r\n"
 	             "Temperature  %u\r\n"
-	             "=================================\r\n\r\n",1,51,1,1,1);
+	             "=================================\r\n\r\n",1,(int16_t)(motorStatus[0] << 8 | motorStatus[1]),(int16_t)(motorStatus[2] << 8 | motorStatus[3]),(int16_t)(motorStatus[4] << 8 | motorStatus[5]),(int16_t)(motorStatus[6]));
 
 		//Adding HAL_Delay would stop the entire code!
 		//HAL_Delay(5000);
 
-		//can_filter_disable(&hcan1);
+		can_filter_disable(&hcan1);
 
 
 	}
