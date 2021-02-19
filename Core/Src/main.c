@@ -105,6 +105,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   buzzer_init();
+  HAL_CAN_Start(&hcan1);
+
 
 
 

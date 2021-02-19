@@ -72,6 +72,9 @@ void Error_Handler(void);
 #define LD_F_GPIO_Port GPIOG
 #define LD_G_Pin GPIO_PIN_2
 #define LD_G_GPIO_Port GPIOG
+#define Button_Pin GPIO_PIN_2
+#define Button_GPIO_Port GPIOB
+#define Button_EXTI_IRQn EXTI2_IRQn
 #define LD_H_Pin GPIO_PIN_1
 #define LD_H_GPIO_Port GPIOG
 #define LED_Red_Pin GPIO_PIN_11
