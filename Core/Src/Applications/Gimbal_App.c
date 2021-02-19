@@ -13,6 +13,8 @@ static CAN_TxHeaderTypeDef  chassis_tx_message;
 extern CAN_HandleTypeDef hcan1;
 extern UART_HandleTypeDef huart7;
 
+
+
 void Gimbal_Task_Function(void const * argument)
 {
 
@@ -24,8 +26,8 @@ void Gimbal_Task_Function(void const * argument)
 	//buzzer_play_mario(200);
 	//int16_t message=7500;
 
-
-	can_filter_enable(&hcan1);
+	HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
+	//can_filter_enable(&hcan1);
 
   for(;;)
   {
@@ -75,12 +77,6 @@ void CAN_Send_Gimbal(int16_t yaw_raw, int16_t pitch_raw)
 //    }
 }
 
-//This function activates whenever the RxFifo receives a message persumably? But it doesnt seem to work right now
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
-	HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
-	HAL_Delay(1000);
-}
-
 void can_filter_enable(CAN_HandleTypeDef* hcan){
 	CAN_FilterTypeDef CAN_FilterConfigStructure;
 
@@ -98,6 +94,8 @@ void can_filter_enable(CAN_HandleTypeDef* hcan){
 
 	HAL_CAN_ConfigFilter(hcan, &CAN_FilterConfigStructure);
 }
+
+
 
 void can_filter_disable(CAN_HandleTypeDef* hcan){
 	CAN_FilterTypeDef CAN_FilterConfigStructure;
@@ -117,10 +115,17 @@ void can_filter_disable(CAN_HandleTypeDef* hcan){
 	HAL_CAN_ConfigFilter(hcan, &CAN_FilterConfigStructure);
 }
 
+//This function activates whenever the RxFifo receives a message persumably? But it doesnt seem to work right now
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
+	HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
+	//HAL_Delay(1000);
+}
+
 //This function occurs whenever an EXTI line is called, the EXTI needs to be setup in the ioc file, and button pin is setup as interrupt (EXTI2) right now, and hence, whenver the white button is pressed, this function below is activated
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	if(GPIO_Pin == Button_Pin){
 		//can_filter_enable(&hcan1);
+		HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
 
 
 		printf("\n======== 6020 DATA REPORT ========\r\n"
@@ -129,7 +134,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	             "Current      %d\r\n"
 	             "Speed        %d\r\n"
 	             "Temperature  %u\r\n"
-	             "=================================\r\n\r\n",1,1,1,1,1);
+	             "=================================\r\n\r\n",1,51,1,1,1);
 
 		//Adding HAL_Delay would stop the entire code!
 		//HAL_Delay(5000);
