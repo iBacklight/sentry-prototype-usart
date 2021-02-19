@@ -34,11 +34,14 @@ void Gimbal_Task_Function(void const * argument)
 	//int16_t message=7500;
 
 	HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
+	velocity=3000;
 	//can_filter_enable(&hcan1);
 
-	velocity=3000;
+	//Variables for a part that doesn't work yet
+/*
+	uint16_t counter=0;*/
 
-	uint16_t counter=0;
+	//End of variables that doesn't work
 
 
 
@@ -47,9 +50,9 @@ void Gimbal_Task_Function(void const * argument)
 	  HAL_GPIO_TogglePin(LD_C_GPIO_Port, LD_C_Pin);
 	  CAN_Send_Gimbal(velocity,0);
 
-	  //This part does not work yet
+	  //This part does not work yet, its meant to be a real-time read
 
-	  uint8_t motorStatus2[8];
+/*	  uint8_t motorStatus2[8];
 
 
 	  if (counter==33){
@@ -63,7 +66,8 @@ void Gimbal_Task_Function(void const * argument)
 	  if (8192-current_angle<100){
 		  velocity=0;
 	  }
-	  counter++;
+	  counter++;*/
+
 	  //End of not working part
 
 
