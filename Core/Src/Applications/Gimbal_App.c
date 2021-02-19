@@ -47,6 +47,8 @@ void Gimbal_Task_Function(void const * argument)
 	  HAL_GPIO_TogglePin(LD_C_GPIO_Port, LD_C_Pin);
 	  CAN_Send_Gimbal(velocity,0);
 
+	  //This part does not work yet
+
 	  uint8_t motorStatus2[8];
 
 
@@ -62,6 +64,7 @@ void Gimbal_Task_Function(void const * argument)
 		  velocity=0;
 	  }
 	  counter++;
+	  //End of not working part
 
 
 	  //osDelay(500);
