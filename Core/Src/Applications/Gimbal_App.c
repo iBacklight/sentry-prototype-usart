@@ -18,6 +18,9 @@ extern UART_HandleTypeDef huart7;
 
 
 uint8_t can_rx_buffer[8];
+int16_t current_angle;
+//Velocity, from -30000 to 30000
+int16_t velocity;
 
 void Gimbal_Task_Function(void const * argument)
 {
@@ -33,11 +36,32 @@ void Gimbal_Task_Function(void const * argument)
 	HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
 	//can_filter_enable(&hcan1);
 
+	velocity=3000;
+
+	uint16_t counter=0;
+
+
+
   for(;;)
   {
 	  HAL_GPIO_TogglePin(LD_C_GPIO_Port, LD_C_Pin);
-	  CAN_Send_Gimbal(3000,0);
+	  CAN_Send_Gimbal(velocity,0);
 
+	  uint8_t motorStatus2[8];
+
+
+	  if (counter==33){
+	  can_filter_enable(&hcan1);
+	  memcpy(motorStatus2, can_rx_buffer,8);
+	  can_filter_disable(&hcan1);
+	  counter=0;
+	  }
+
+	  current_angle=(int16_t)(motorStatus2[0] << 8 | motorStatus2[1]);
+	  if (8192-current_angle<100){
+		  velocity=0;
+	  }
+	  counter++;
 
 
 	  //osDelay(500);
@@ -49,8 +73,8 @@ void Gimbal_Task_Function(void const * argument)
 void CAN_Send_Gimbal(int16_t yaw_raw, int16_t pitch_raw)
 {
     uint32_t send_mail_box;
-    chassis_tx_message.StdId = 0x200;  // 3508
-	//chassis_tx_message.StdId = 0x1FF;  // gimbal
+    //chassis_tx_message.StdId = 0x200;  // 3508
+	chassis_tx_message.StdId = 0x1FF;  // gimbal
     chassis_tx_message.IDE = CAN_ID_STD;
     chassis_tx_message.RTR = CAN_RTR_DATA;
     chassis_tx_message.DLC = 0x08;

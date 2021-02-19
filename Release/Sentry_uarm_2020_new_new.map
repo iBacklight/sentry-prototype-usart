@@ -94,11 +94,13 @@ pFlash              0x20              Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx
 ChassisTaskHandle   0x4               Core/Src/main.o
 htim5               0x40              Core/Src/stm32f4xx_hal_timebase_tim.o
 ShootTaskHandle     0x4               Core/Src/main.o
+current_angle       0x2               Core/Src/Applications/Gimbal_App.o
 hcan2               0x28              Core/Src/Applications/Chassis_App.o
 GimbalTaskHandle    0x4               Core/Src/main.o
 hcan1               0x28              Core/Src/Applications/Chassis_App.o
 can_rx_buffer       0x8               Core/Src/Applications/Gimbal_App.o
 htim12              0x40              Core/Src/Applications/Chassis_App.o
+can_rx_buffer_2     0x8               Core/Src/Applications/Gimbal_App.o
 
 Discarded input sections
 
@@ -2377,7 +2379,7 @@ LOAD c:/essential programs/stm32cubeide_1.5.0/stm32cubeide/plugins/com.st.stm32c
  .igot.plt      0x0000000020000074        0x0 c:/essential programs/stm32cubeide_1.5.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/thumb/v7e-m/fpv4-sp/hard/crtbegin.o
                 0x0000000020000074                . = ALIGN (0x4)
 
-.bss            0x0000000020000074     0x4148 load address 0x0000000008004844
+.bss            0x0000000020000074     0x4154 load address 0x0000000008004844
                 0x0000000020000074                _sbss = .
                 0x0000000020000074                __bss_start__ = _sbss
  *(.bss)
@@ -2460,33 +2462,35 @@ LOAD c:/essential programs/stm32cubeide_1.5.0/stm32cubeide/plugins/com.st.stm32c
                 0x0000000020004098                hcan2
                 0x00000000200040c0                hcan1
                 0x00000000200040e8                htim12
- COMMON         0x0000000020004128        0x8 Core/Src/Applications/Gimbal_App.o
-                0x0000000020004128                can_rx_buffer
- COMMON         0x0000000020004130        0x4 Core/Src/freertos.o
-                0x0000000020004130                defaultTaskHandle
- COMMON         0x0000000020004134       0x40 Core/Src/stm32f4xx_hal_timebase_tim.o
-                0x0000000020004134                htim5
- COMMON         0x0000000020004174       0x40 Core/Src/usart.o
-                0x0000000020004174                huart7
- COMMON         0x00000000200041b4        0x4 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                0x00000000200041b4                uwTick
- COMMON         0x00000000200041b8        0x4 c:/essential programs/stm32cubeide_1.5.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-reent.o)
-                0x00000000200041b8                errno
-                0x00000000200041bc                . = ALIGN (0x4)
-                0x00000000200041bc                _ebss = .
-                0x00000000200041bc                __bss_end__ = _ebss
+ COMMON         0x0000000020004128       0x12 Core/Src/Applications/Gimbal_App.o
+                0x0000000020004128                current_angle
+                0x000000002000412a                can_rx_buffer
+                0x0000000020004132                can_rx_buffer_2
+ *fill*         0x000000002000413a        0x2 
+ COMMON         0x000000002000413c        0x4 Core/Src/freertos.o
+                0x000000002000413c                defaultTaskHandle
+ COMMON         0x0000000020004140       0x40 Core/Src/stm32f4xx_hal_timebase_tim.o
+                0x0000000020004140                htim5
+ COMMON         0x0000000020004180       0x40 Core/Src/usart.o
+                0x0000000020004180                huart7
+ COMMON         0x00000000200041c0        0x4 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                0x00000000200041c0                uwTick
+ COMMON         0x00000000200041c4        0x4 c:/essential programs/stm32cubeide_1.5.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.7-2018-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/7.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m/fpv4-sp/hard\libc_nano.a(lib_a-reent.o)
+                0x00000000200041c4                errno
+                0x00000000200041c8                . = ALIGN (0x4)
+                0x00000000200041c8                _ebss = .
+                0x00000000200041c8                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x00000000200041bc      0x604 load address 0x0000000008004844
-                0x00000000200041c0                . = ALIGN (0x8)
- *fill*         0x00000000200041bc        0x4 
+                0x00000000200041c8      0x600 load address 0x0000000008004844
+                0x00000000200041c8                . = ALIGN (0x8)
                 [!provide]                        PROVIDE (end = .)
-                0x00000000200041c0                PROVIDE (_end = .)
-                0x00000000200043c0                . = (. + _Min_Heap_Size)
- *fill*         0x00000000200041c0      0x200 
-                0x00000000200047c0                . = (. + _Min_Stack_Size)
- *fill*         0x00000000200043c0      0x400 
-                0x00000000200047c0                . = ALIGN (0x8)
+                0x00000000200041c8                PROVIDE (_end = .)
+                0x00000000200043c8                . = (. + _Min_Heap_Size)
+ *fill*         0x00000000200041c8      0x200 
+                0x00000000200047c8                . = (. + _Min_Stack_Size)
+ *fill*         0x00000000200043c8      0x400 
+                0x00000000200047c8                . = ALIGN (0x8)
 
 /DISCARD/
  libc.a(*)
