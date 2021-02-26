@@ -8,13 +8,15 @@
 #include "Gimbal_App.h"
 
 
-
+void can_filter_enable(CAN_HandleTypeDef* hcan);
+void can_filter_disable(CAN_HandleTypeDef* hcan);
 
 static uint8_t chassis_can_send_data[8];
 static CAN_TxHeaderTypeDef  chassis_tx_message;
 
 extern CAN_HandleTypeDef hcan1;
 extern UART_HandleTypeDef huart7;
+extern TIM_HandleTypeDef htim14;
 
 
 uint8_t can_rx_buffer[8];
@@ -49,6 +51,23 @@ void Gimbal_Task_Function(void const * argument)
   {
 	  HAL_GPIO_TogglePin(LD_C_GPIO_Port, LD_C_Pin);
 	  CAN_Send_Gimbal(velocity,0);
+	  uint8_t motorStatus2[8];
+
+	  can_filter_enable(&hcan1);
+
+	  memcpy(motorStatus2, can_rx_buffer,8);
+	  current_angle=(int16_t)(motorStatus2[0] << 8 | motorStatus2[1]);
+	  //Current angle is absolute
+	  printf("The current angle is %d\n",current_angle);
+	  if (abs(current_angle-4096)<50){
+		  velocity=0;
+	  }
+	  else{
+		  velocity=3000;
+	  }
+	  can_filter_disable(&hcan1);
+
+
 
 	  //This part does not work yet, its meant to be a real-time read
 
@@ -72,7 +91,7 @@ void Gimbal_Task_Function(void const * argument)
 
 
 	  //osDelay(500);
-	  osDelay(3);
+	  osDelay(1);
   }
   /* USER CODE END Gimbal_Task_Function */
 }
