@@ -102,10 +102,12 @@ int main(void)
   MX_TIM4_Init();
   MX_TIM12_Init();
   MX_UART7_Init();
+  MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
 
   buzzer_init();
   HAL_CAN_Start(&hcan1);
+  HAL_TIM_Base_Start_IT(&htim14);
 
 
 
@@ -187,11 +189,15 @@ void SystemClock_Config(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* USER CODE BEGIN Callback 0 */
+  if (htim->Instance == TIM14){
+		HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
+  }
 
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM5) {
     HAL_IncTick();
   }
+
   /* USER CODE BEGIN Callback 1 */
 
   /* USER CODE END Callback 1 */
