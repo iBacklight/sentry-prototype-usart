@@ -35,6 +35,10 @@ extern CAN_HandleTypeDef hcan1;
 
 /* USER CODE BEGIN Private defines */
 
+void can_filter_enable(CAN_HandleTypeDef* hcan);
+void can_filter_disable(CAN_HandleTypeDef* hcan);
+
+
 /* USER CODE END Private defines */
 
 void MX_CAN1_Init(void);

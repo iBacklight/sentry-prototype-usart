@@ -29,6 +29,7 @@
 #include "Applications/Chassis_App.h"
 #include "Applications/Gimbal_App.h"
 #include "Applications/Shoot_App.h"
+#include "Applications/Timer_App.h"
 
 /* USER CODE END Includes */
 
@@ -88,6 +89,7 @@ void MX_FREERTOS_Init(void) {
 	osThreadId ChassisTaskHandle;
 	osThreadId GimbalTaskHandle;
 	osThreadId ShootTaskHandle;
+	osThreadId TimerTaskHandle;
 
   /* USER CODE END Init */
 
@@ -121,6 +123,9 @@ void MX_FREERTOS_Init(void) {
 
     osThreadDef(ShootTask, Shoot_Task_Func, osPriorityNormal, 0, 128);
     ShootTaskHandle = osThreadCreate(osThread(ShootTask), NULL);
+
+    osThreadDef(TimerTask, Timer_Task_Func, osPriorityAboveNormal, 0, 128);
+    TimerTaskHandle = osThreadCreate(osThread(TimerTask), NULL);
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
