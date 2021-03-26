@@ -8,14 +8,14 @@
 #ifndef SRC_DEVICE_MOTOR_H_
 #define SRC_DEVICE_MOTOR_H_
 
+#define MOTOR_COUNT 8
+#define MOTOR_3508_STDID 0x1FF
+#define MOTOR_6020_STDID 0x200
 
 #include "main.h"
 #include "cmsis_os.h"
 #include "can.h"
 
-#define MOTOR_COUNT 8
-#define MOTOR_3508_STDID 0x1FF
-#define MOTOR_6020_STDID 0x200
 
 typedef struct {
 	uint32_t stdid;

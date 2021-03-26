@@ -55,7 +55,7 @@ void Gimbal_Task_Function(void const * argument)
 //
 //	  motor_data[4] = temp4;
 //
-//	  Motor_Overwrite(temp4, motor_data[4]); (critical section avoid race condition)
+//	  Motor_Overwrite(temp4, motor_data[4]); (critical section avoid race condition) Mutex
 //
 
 //	  uint8_t motorStatus2[8];

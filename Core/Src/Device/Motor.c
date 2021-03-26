@@ -13,8 +13,8 @@ void Motor_Data_Read() {
 		memcpy(motorStatus2, can_rx_buffer[i],8);
 		motor_data[i].motor_feedback.rx_angle	=(int16_t)(motorStatus2[0] << 8 | motorStatus2[1]);
 		motor_data[i].motor_feedback.rx_rpm		=(int16_t)(motorStatus2[2] << 8 | motorStatus2[3]);
-		motor_data[i].motor_feedback.rx_current 	=(int16_t)(motorStatus2[4] << 8 | motorStatus2[5]);
-		motor_data[i].motor_feedback.rx_temp		=(int16_t)(motorStatus2[6]);
+		motor_data[i].motor_feedback.rx_current =(int16_t)(motorStatus2[4] << 8 | motorStatus2[5]);
+		motor_data[i].motor_feedback.rx_temp	=(int16_t)(motorStatus2[6]);
 		//Current angle is absolute
 		osDelay(1);
 
@@ -29,6 +29,7 @@ void Motor_Data_Read() {
  */
 void Motor_Data_Sent() {
     uint8_t chassis_can_send_data[8];
+    uint32_t send_mail_box;
     CAN_TxHeaderTypeDef  chassis_tx_message;
 
     chassis_tx_message.IDE = CAN_ID_STD;
@@ -65,4 +66,34 @@ void Motor_Data_Sent() {
 	}
 }
 
+/**
+ * copy destination to origin
+ */
+void get_Motor_buffer(Motor* origin, Motor* destination) {
+	Motor_Data_Replacement(origin, destination);
+}
+/**
+ * copy origin to destination
+ */
+void set_Motor_buffer(Motor* origin, Motor* destination) {
+	Motor_Data_Replacement(origin, destination);
+}
 
+/**
+ * copy origin to destination this can be done by memcopy
+ * need to implement critical section or Mutex
+ */
+void Motor_Data_Replacement(Motor* origin, Motor* destination) {
+	destination->tx_data = origin->tx_data;
+
+	destination->motor_feedback.rx_angle = origin->motor_feedback.rx_angle;
+	destination->motor_feedback.rx_current = origin->motor_feedback.rx_current;
+	destination->motor_feedback.rx_rpm = origin->motor_feedback.rx_rpm;
+	destination->motor_feedback.rx_temp = origin->motor_feedback.rx_temp;
+
+	destination->motor_info.stdid = origin->motor_info.stdid;
+
+	destination->motor_info.P_prameter = origin->motor_info.P_prameter;
+	destination->motor_info.I_prameter = origin->motor_info.I_prameter;
+	destination->motor_info.D_prameter = origin->motor_info.D_prameter;
+}
