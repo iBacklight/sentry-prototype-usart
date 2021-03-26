@@ -1,1 +1,4 @@
-Motor.c:3:6:Motor_Data_Read	24	static
+Motor.c:7:6:Motor_Data_Read	24	static
+Motor.c:30:6:Motor_Data_Sent	48	static
+Motor.c:72:6:get_Motor_buffer	16	static
+Motor.c:78:6:set_Motor_buffer	16	static
