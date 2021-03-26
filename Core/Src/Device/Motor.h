@@ -57,5 +57,7 @@ Motor motor_data[MOTOR_COUNT];
 
 void Motor_Data_Read();
 void Motor_Data_Sent();
+void get_Motor_buffer(Motor* origin, Motor* destination);
+void set_Motor_buffer(Motor* origin, Motor* destination);
 
 #endif /* SRC_DEVICE_MOTOR_H_ */

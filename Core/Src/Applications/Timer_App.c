@@ -14,8 +14,8 @@ void Timer_Task_Func(void const * argument){
 uint32_t tick;
 	for (;;){
 		Motor_Data_Read();
-		Motor_Data_Sent();
-		printf("Current Angle: %d \n", motor_data[0].motor_feedback.rx_angle);
+//		Motor_Data_Sent();
+		printf("Current Angle: %d \n", motor_data[4].motor_feedback.rx_angle);
 
 		//Timer task
 

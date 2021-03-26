@@ -1,0 +1,7 @@
+
+Debug/Core/Src/gpio.o
+Debug/Core/Src/main.o
+*.bin
+*.elf
+*.list
+*.map
