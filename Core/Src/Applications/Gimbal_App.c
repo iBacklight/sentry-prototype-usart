@@ -48,6 +48,16 @@ void Gimbal_Task_Function(void const * argument)
   {
 	  HAL_GPIO_TogglePin(LD_C_GPIO_Port, LD_C_Pin);
 	  CAN_Send_Gimbal(velocity,0);
+
+//	  Motor temp4 = motor_data[4];
+//	  processing you what
+//
+//
+//	  motor_data[4] = temp4;
+//
+//	  Motor_Overwrite(temp4, motor_data[4]); (critical section avoid race condition)
+//
+
 //	  uint8_t motorStatus2[8];
 //
 //	  can_filter_enable(&hcan1);

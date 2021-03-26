@@ -14,6 +14,8 @@
 #include "can.h"
 
 #define MOTOR_COUNT 8
+#define MOTOR_3508_STDID 0x1FF
+#define MOTOR_6020_STDID 0x200
 
 typedef struct {
 	uint32_t stdid;
@@ -40,8 +42,18 @@ typedef struct {
 
 }Motor;
 
+// first 4th motor will use 0x1FF, last 4th motor will use 0x200
+// motor_data[0]: first 	3508
+// motor_data[1]: second 	3508
+// motor_data[2]: third 	3508
+
+// motor_data[4]: first 	6020
+// motor_data[5]: second 	6020
+
+
 Motor motor_data[MOTOR_COUNT];
 
 void Motor_Data_Read();
+void Motor_Data_Sent();
 
 #endif /* SRC_DEVICE_MOTOR_H_ */
