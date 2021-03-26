@@ -8,6 +8,10 @@
 #ifndef SRC_DEVICE_MOTOR_H_
 #define SRC_DEVICE_MOTOR_H_
 
+
+
+
+
 #define MOTOR_COUNT 8
 #define MOTOR_3508_STDID 0x1FF
 #define MOTOR_6020_STDID 0x200
