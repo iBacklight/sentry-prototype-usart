@@ -103,6 +103,35 @@ void MX_GPIO_Init(void)
 
 
 
+//This function occurs whenever an EXTI line is called, the EXTI needs to be setup in the ioc file, and button pin is setup as interrupt (EXTI2) right now, and hence, whenver the white button is pressed, this function below is activated
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+	if(GPIO_Pin == Button_Pin){
+		//can_filter_enable(&hcan1);
+		can_filter_enable(&hcan1);
+		uint8_t motorStatus[8];
+		memcpy(motorStatus, can_rx_buffer,8);
+
+
+		//HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
+
+
+		printf("\n======== 6020 DATA REPORT ========\r\n"
+	             "ID           %d\r\n"
+	             "Angle        %d\r\n"
+	             "Current      %d\r\n"
+	             "Speed        %d\r\n"
+	             "Temperature  %u\r\n"
+	             "=================================\r\n\r\n",1,(int16_t)(motorStatus[0] << 8 | motorStatus[1]),(int16_t)(motorStatus[2] << 8 | motorStatus[3]),(int16_t)(motorStatus[4] << 8 | motorStatus[5]),(int16_t)(motorStatus[6]));
+
+		//Adding HAL_Delay would stop the entire code!
+		//HAL_Delay(5000);
+
+		can_filter_disable(&hcan1);
+
+
+	}
+}
+
 /* USER CODE END 2 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

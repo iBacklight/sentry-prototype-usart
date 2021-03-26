@@ -150,6 +150,14 @@ void can_filter_disable(CAN_HandleTypeDef* hcan){
 	HAL_CAN_ConfigFilter(hcan, &CAN_FilterConfigStructure);
 }
 
+
+//This function activates whenever the RxFifo receives a message persumably? But it doesnt seem to work right now
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
+	CAN_RxHeaderTypeDef rx_header;
+	rx_header.StdId = (CAN_RI0R_STID & hcan->Instance->sFIFOMailBox[CAN_RX_FIFO0].RIR) >> CAN_TI0R_STID_Pos;
+	HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, can_rx_buffer);
+}
+
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
