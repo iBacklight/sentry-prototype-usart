@@ -48,21 +48,22 @@ void Gimbal_Task_Function(void const * argument)
   {
 	  HAL_GPIO_TogglePin(LD_C_GPIO_Port, LD_C_Pin);
 	  CAN_Send_Gimbal(velocity,0);
-	  uint8_t motorStatus2[8];
-
-	  can_filter_enable(&hcan1);
-
-	  memcpy(motorStatus2, can_rx_buffer,8);
-	  current_angle=(int16_t)(motorStatus2[0] << 8 | motorStatus2[1]);
-	  //Current angle is absolute
-	  printf("The current angle is %d\n",current_angle);
-	  if (abs(current_angle-4096)<50){
-		  velocity=0;
-	  }
-	  else{
-		  velocity=3000;
-	  }
-	  can_filter_disable(&hcan1);
+//	  uint8_t motorStatus2[8];
+//
+//	  can_filter_enable(&hcan1);
+//
+//	  memcpy(motorStatus2, can_rx_buffer,8);
+//	  current_angle=(int16_t)(motorStatus2[0] << 8 | motorStatus2[1]);
+//	  //Current angle is absolute
+//	  printf("The current angle is %d\n",current_angle);
+//
+//	  can_filter_disable(&hcan1);
+//	  if (abs(current_angle-4096)<50){
+//		  velocity=0;
+//	  }
+//	  else{
+//		  velocity=3000;
+//	  }
 
 
 
@@ -126,36 +127,4 @@ void CAN_Send_Gimbal(int16_t yaw_raw, int16_t pitch_raw)
 //    	buzzer_play_d1(100);
 //    	buzzer_play_e1(100);
 //    }
-}
-
-
-
-
-//This function occurs whenever an EXTI line is called, the EXTI needs to be setup in the ioc file, and button pin is setup as interrupt (EXTI2) right now, and hence, whenver the white button is pressed, this function below is activated
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
-	if(GPIO_Pin == Button_Pin){
-		//can_filter_enable(&hcan1);
-		can_filter_enable(&hcan1);
-		uint8_t motorStatus[8];
-		memcpy(motorStatus, can_rx_buffer,8);
-
-
-		//HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
-
-
-		printf("\n======== 6020 DATA REPORT ========\r\n"
-	             "ID           %d\r\n"
-	             "Angle        %d\r\n"
-	             "Current      %d\r\n"
-	             "Speed        %d\r\n"
-	             "Temperature  %u\r\n"
-	             "=================================\r\n\r\n",1,(int16_t)(motorStatus[0] << 8 | motorStatus[1]),(int16_t)(motorStatus[2] << 8 | motorStatus[3]),(int16_t)(motorStatus[4] << 8 | motorStatus[5]),(int16_t)(motorStatus[6]));
-
-		//Adding HAL_Delay would stop the entire code!
-		//HAL_Delay(5000);
-
-		can_filter_disable(&hcan1);
-
-
-	}
 }

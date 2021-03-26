@@ -29,6 +29,7 @@ extern "C" {
 
 /* USER CODE BEGIN Includes */
 
+#include "can.h"
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN Private defines */
