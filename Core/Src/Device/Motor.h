@@ -14,6 +14,7 @@
 #define MOTOR_3508_STDID 0x1FF
 #define MOTOR_6020_STDID 0x200
 
+
 #include "main.h"
 #include "cmsis_os.h"
 #include "can.h"
