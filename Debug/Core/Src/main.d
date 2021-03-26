@@ -45,9 +45,9 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
- ../Core/Inc/can.h ../Core/Inc/main.h ../Core/Inc/tim.h \
- ../Core/Inc/usart.h ../Core/Inc/gpio.h ../Core/Inc/can.h \
- ../Core/Src/Applications/Chassis_App.h \
+ ../Core/Inc/can.h ../Core/Inc/main.h ../Core/Inc/../Src/Device/Motor.h \
+ ../Core/Inc/tim.h ../Core/Inc/usart.h ../Core/Inc/gpio.h \
+ ../Core/Inc/can.h ../Core/Src/Applications/Chassis_App.h \
  ../Core/Src/Applications/../buzzer.h \
  ../Core/Src/Applications/Gimbal_App.h \
  ../Core/Src/Applications/Shoot_App.h
@@ -149,6 +149,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/can.h:
 
 ../Core/Inc/main.h:
+
+../Core/Inc/../Src/Device/Motor.h:
 
 ../Core/Inc/tim.h:
 

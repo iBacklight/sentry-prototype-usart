@@ -151,11 +151,17 @@ void can_filter_disable(CAN_HandleTypeDef* hcan){
 }
 
 
-//This function activates whenever the RxFifo receives a message persumably? But it doesnt seem to work right now
+/*This function activates whenever the RxFifo receives a message
+ * The StdId is obtained from the can message, then it is written into the buffer array (it is an array of arrays)
+ * To figure out which motor it is for the read/write functions, we will refer to a table - see notes from March 25, 2021
+ * There may be a better table later
+
+*/
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
 	CAN_RxHeaderTypeDef rx_header;
 	rx_header.StdId = (CAN_RI0R_STID & hcan->Instance->sFIFOMailBox[CAN_RX_FIFO0].RIR) >> CAN_TI0R_STID_Pos;
-	HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, can_rx_buffer);
+	uint8_t idx=rx_header.StdId-CAN_RX_ID_START;
+	HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, can_rx_buffer[idx]);
 }
 
 /* USER CODE END 1 */
