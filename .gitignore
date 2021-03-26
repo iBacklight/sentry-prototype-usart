@@ -1,6 +1,5 @@
 
-Debug/Core/Src/gpio.o
-Debug/Core/Src/main.o
+*.o
 *.bin
 *.elf
 *.list
