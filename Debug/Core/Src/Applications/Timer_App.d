@@ -1,14 +1,6 @@
-Core/Src/freertos.o: ../Core/Src/freertos.c \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
- ../Core/Inc/FreeRTOSConfig.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
- ../Core/Inc/main.h ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
+Core/Src/Applications/Timer_App.o: ../Core/Src/Applications/Timer_App.c \
+ ../Core/Src/Applications/Timer_App.h ../Core/Inc/main.h \
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h \
@@ -38,6 +30,15 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
+ ../Core/Inc/FreeRTOSConfig.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
@@ -45,30 +46,10 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
- ../Core/Src/Applications/Chassis_App.h \
- ../Core/Src/Applications/../buzzer.h \
- ../Core/Src/Applications/Gimbal_App.h ../Core/Inc/can.h \
- ../Core/Inc/main.h ../Core/Src/Applications/Timer_App.h \
- ../Core/Src/Applications/Shoot_App.h \
- ../Core/Src/Applications/Timer_App.h
+ ../Core/Src/Applications/../buzzer.h ../Core/Inc/can.h \
+ ../Core/Inc/main.h
 
-../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
-
-../Core/Inc/FreeRTOSConfig.h:
-
-../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
-
-../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
-
-../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:
-
-../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h:
-
-../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h:
-
-../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
-
-../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
+../Core/Src/Applications/Timer_App.h:
 
 ../Core/Inc/main.h:
 
@@ -132,6 +113,24 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
 
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h:
 
+../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
+
+../Core/Inc/FreeRTOSConfig.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
+
 ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h:
 
 ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
@@ -146,18 +145,8 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
 
 ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h:
 
-../Core/Src/Applications/Chassis_App.h:
-
 ../Core/Src/Applications/../buzzer.h:
-
-../Core/Src/Applications/Gimbal_App.h:
 
 ../Core/Inc/can.h:
 
 ../Core/Inc/main.h:
-
-../Core/Src/Applications/Timer_App.h:
-
-../Core/Src/Applications/Shoot_App.h:
-
-../Core/Src/Applications/Timer_App.h:

@@ -1,6 +1,7 @@
 "Core/Src/Applications/Chassis_App.o"
 "Core/Src/Applications/Gimbal_App.o"
 "Core/Src/Applications/Shoot_App.o"
+"Core/Src/Applications/Timer_App.o"
 "Core/Src/buzzer.o"
 "Core/Src/can.o"
 "Core/Src/freertos.o"
