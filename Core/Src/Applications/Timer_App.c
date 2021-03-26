@@ -13,11 +13,8 @@ void Timer_Task_Func(void const * argument){
 
 uint32_t tick;
 	for (;;){
-
-		tick=HAL_GetTick();
-		//buzzer_play_g0(100);
-		//printf("CurrentTime \n");
-		printf("CurrentTime: %d \n",(uint32_t)tick);
+		Motor_Data_Read();
+		printf("Current Angle: %d \n", motor_data[0].motor_feedback.rx_angle);
 
 		//Timer task
 
@@ -38,13 +35,4 @@ uint32_t tick;
 	}
 
 
-}
-
-//This function activates whenever the RxFifo receives a message persumably? But it doesnt seem to work right now
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
-	CAN_RxHeaderTypeDef rx_header;
-	rx_header.StdId = (CAN_RI0R_STID & hcan->Instance->sFIFOMailBox[CAN_RX_FIFO0].RIR) >> CAN_TI0R_STID_Pos;
-	HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, can_rx_buffer);
-	//HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
-	//HAL_Delay(1000);
 }

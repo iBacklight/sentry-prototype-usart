@@ -33,6 +33,8 @@ extern "C" {
 
 extern CAN_HandleTypeDef hcan1;
 
+uint8_t can_rx_buffer[8];
+
 /* USER CODE BEGIN Private defines */
 
 void can_filter_enable(CAN_HandleTypeDef* hcan);
