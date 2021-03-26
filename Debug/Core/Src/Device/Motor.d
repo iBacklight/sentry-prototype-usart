@@ -46,7 +46,7 @@ Core/Src/Device/Motor.o: ../Core/Src/Device/Motor.c \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
- ../Core/Inc/can.h ../Core/Inc/main.h
+ ../Core/Inc/can.h ../Core/Inc/main.h ../Core/Inc/../Src/Device/Motor.h
 
 ../Core/Src/Device/Motor.h:
 
@@ -147,3 +147,5 @@ Core/Src/Device/Motor.o: ../Core/Src/Device/Motor.c \
 ../Core/Inc/can.h:
 
 ../Core/Inc/main.h:
+
+../Core/Inc/../Src/Device/Motor.h:

@@ -28,12 +28,15 @@ extern "C" {
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
+#include "../Src/Device/Motor.h"
+
 
 /* USER CODE END Includes */
 
 extern CAN_HandleTypeDef hcan1;
 
-uint8_t can_rx_buffer[8];
+//can_rx_buffer is an array of arrays, each element is a 8-bit buffer, and the number of elements equals to the number of motors present
+uint8_t can_rx_buffer[MOTOR_COUNT][8];
 
 /* USER CODE BEGIN Private defines */
 

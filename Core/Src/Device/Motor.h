@@ -8,6 +8,10 @@
 #ifndef SRC_DEVICE_MOTOR_H_
 #define SRC_DEVICE_MOTOR_H_
 
+//Define needs to go ahead of include here for whatever reason....
+#define MOTOR_COUNT 8
+#define CAN_RX_ID_START 0x201
+
 
 
 
@@ -20,6 +24,10 @@
 #include "cmsis_os.h"
 #include "can.h"
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
 
 typedef struct {
 	uint32_t stdid;

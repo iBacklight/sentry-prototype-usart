@@ -47,7 +47,8 @@ Core/Src/Applications/Timer_App.o: ../Core/Src/Applications/Timer_App.c \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
  ../Core/Src/Applications/../buzzer.h ../Core/Inc/can.h \
- ../Core/Inc/main.h ../Core/Src/Applications/../Device/Motor.h
+ ../Core/Inc/main.h ../Core/Inc/../Src/Device/Motor.h \
+ ../Core/Src/Applications/../Device/Motor.h
 
 ../Core/Src/Applications/Timer_App.h:
 
@@ -150,5 +151,7 @@ Core/Src/Applications/Timer_App.o: ../Core/Src/Applications/Timer_App.c \
 ../Core/Inc/can.h:
 
 ../Core/Inc/main.h:
+
+../Core/Inc/../Src/Device/Motor.h:
 
 ../Core/Src/Applications/../Device/Motor.h:
