@@ -9,14 +9,18 @@
 #define SRC_DEVICE_MOTOR_H_
 
 //Define needs to go ahead of include here for whatever reason....
+
 #define MOTOR_COUNT 8
+#define MOTOR_3508_STDID 0x1FF
+#define MOTOR_6020_STDID 0x200
+
 #define CAN_RX_ID_START 0x201
+
 
 
 #include "main.h"
 #include "cmsis_os.h"
 #include "can.h"
-
 
 
 typedef struct {
@@ -44,8 +48,18 @@ typedef struct {
 
 }Motor;
 
+// first 4th motor will use 0x1FF, last 4th motor will use 0x200
+// motor_data[0]: first 	3508
+// motor_data[1]: second 	3508
+// motor_data[2]: third 	3508
+
+// motor_data[4]: first 	6020
+// motor_data[5]: second 	6020
+
+
 Motor motor_data[MOTOR_COUNT];
 
 void Motor_Data_Read();
+void Motor_Data_Sent();
 
 #endif /* SRC_DEVICE_MOTOR_H_ */
