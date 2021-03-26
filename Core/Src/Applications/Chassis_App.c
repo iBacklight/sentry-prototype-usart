@@ -17,7 +17,7 @@ void Chassis_Task_Func(void const * argument)
   double i=0;
   for(;;)
   {
-	//printf("\nWelcome to RM-EE\n");
+	printf("\nWelcome to RM-EE\n");
 	//printf("Hello, the current time is %.2F",i);
 	i+=0.1;
     osDelay(500);

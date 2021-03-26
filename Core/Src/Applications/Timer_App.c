@@ -7,7 +7,7 @@
 
 #include "Timer_App.h"
 
-uint8_t can_rx_buffer[8];
+
 
 void Timer_Task_Func(void const * argument){
 

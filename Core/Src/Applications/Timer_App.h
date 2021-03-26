@@ -32,5 +32,6 @@ typedef struct {
 } motorstat;
 
 void Timer_Task_Func(void const * argument);
+uint8_t can_rx_buffer[8];
 
 #endif /* SRC_APPLICATIONS_TIMER_APP_H_ */
