@@ -11,6 +11,7 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "../buzzer.h"
+#include "../Device/Motor.h"
 
 void Chassis_Task_Func(void const * argument);
 

@@ -11,8 +11,8 @@
 //Define needs to go ahead of include here for whatever reason....
 
 #define MOTOR_COUNT 8
-#define MOTOR_3508_STDID 0x1FF
-#define MOTOR_6020_STDID 0x200
+#define MOTOR_3508_STDID 0x200
+#define MOTOR_6020_STDID 0x1FF
 
 #define CAN_RX_ID_START 0x201
 

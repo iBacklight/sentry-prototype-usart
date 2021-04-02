@@ -47,7 +47,7 @@ void Gimbal_Task_Function(void const * argument)
   for(;;)
   {
 	  HAL_GPIO_TogglePin(LD_C_GPIO_Port, LD_C_Pin);
-	  CAN_Send_Gimbal(velocity,0);
+	  //CAN_Send_Gimbal(velocity,0);
 
 //	  Motor temp4 = motor_data[4];
 //	  processing you what

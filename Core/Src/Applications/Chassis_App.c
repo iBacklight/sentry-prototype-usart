@@ -14,13 +14,16 @@ void Chassis_Task_Func(void const * argument)
   /* USER CODE BEGIN Chassis_Task_Func */
 	//buzzer_play_mario(200);
   /* Infinite loop */
-  double i=0;
+  //double i=0;
+  double velocity=3000;
   for(;;)
   {
-	printf("\nWelcome to RM-EE\n");
+	//printf("\nWelcome to RM-EE\n");
+
+	motor_data[4].tx_data=velocity;
 	//printf("Hello, the current time is %.2F",i);
-	i+=0.1;
-    osDelay(500);
+	//i+=0.1;
+    //osDelay(500);
     osDelay(1);
   }
   /* USER CODE END Chassis_Task_Func */
