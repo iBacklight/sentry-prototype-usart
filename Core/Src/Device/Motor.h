@@ -9,12 +9,11 @@
 #define SRC_DEVICE_MOTOR_H_
 
 //Define needs to go ahead of include here for whatever reason....
-
 #define MOTOR_COUNT 8
-#define MOTOR_3508_STDID 0x200
-#define MOTOR_6020_STDID 0x1FF
 
 #define CAN_RX_ID_START 0x201
+#define MOTOR_3508_STDID 0x1FF
+#define MOTOR_6020_STDID 0x200
 
 
 
@@ -61,5 +60,7 @@ Motor motor_data[MOTOR_COUNT];
 
 void Motor_Data_Read();
 void Motor_Data_Sent();
+void get_Motor_buffer(Motor* origin, Motor* destination);
+void set_Motor_buffer(Motor* origin, Motor* destination);
 
 #endif /* SRC_DEVICE_MOTOR_H_ */
