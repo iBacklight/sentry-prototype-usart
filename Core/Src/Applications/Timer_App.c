@@ -15,9 +15,15 @@ uint32_t tick;
 	for (;;){
 		Motor_Data_Read();
 		Motor_Data_Sent();
+		Motor temp_buffer;
+		Motor temp_buffer_3508;
+		get_Motor_buffer(&motor_data[4], &temp_buffer);
+		get_Motor_buffer(&motor_data[0], &temp_buffer_3508);
 
 
-		printf("Current Angle: %d \n", motor_data[4].motor_feedback.rx_angle);
+
+		printf("Current RPM (6020): %d \n", temp_buffer.motor_feedback.rx_rpm);
+		printf("Current RPM (3508): %d \n", temp_buffer_3508.motor_feedback.rx_rpm);
 
 		//Timer task
 
