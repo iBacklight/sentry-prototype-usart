@@ -48,8 +48,8 @@ Core/Src/Applications/Gimbal_App.o: ../Core/Src/Applications/Gimbal_App.c \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
  ../Core/Src/Applications/../buzzer.h \
- ../Core/Src/Applications/Timer_App.h \
- ../Core/Src/Applications/../Device/Motor.h
+ ../Core/Src/Applications/../Device/Motor.h \
+ ../Core/Src/Applications/Timer_App.h
 
 ../Core/Src/Applications/Gimbal_App.h:
 
@@ -155,6 +155,6 @@ Core/Src/Applications/Gimbal_App.o: ../Core/Src/Applications/Gimbal_App.c \
 
 ../Core/Src/Applications/../buzzer.h:
 
-../Core/Src/Applications/Timer_App.h:
-
 ../Core/Src/Applications/../Device/Motor.h:
+
+../Core/Src/Applications/Timer_App.h:

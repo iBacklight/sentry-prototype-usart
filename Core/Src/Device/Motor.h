@@ -24,9 +24,9 @@
 
 typedef struct {
 	uint32_t stdid;
-	uint32_t P_prameter;
-	uint32_t I_prameter;
-	uint32_t D_prameter;
+	int32_t P_parameter;
+	int32_t I_parameter;
+	int32_t D_parameter;
 }Motor_Info;
 
 typedef struct {
@@ -47,7 +47,7 @@ typedef struct {
 
 }Motor;
 
-// first 4th motor will use 0x1FF, last 4th motor will use 0x200
+// first 4th motor will use 0x200, last 4th motor will use 0x1FF
 // motor_data[0]: first 	3508
 // motor_data[1]: second 	3508
 // motor_data[2]: third 	3508
@@ -55,12 +55,15 @@ typedef struct {
 // motor_data[4]: first 	6020
 // motor_data[5]: second 	6020
 
-
+//Define Motor data array//
 Motor motor_data[MOTOR_COUNT];
+//
 
 void Motor_Data_Read();
 void Motor_Data_Sent();
 void get_Motor_buffer(Motor* origin, Motor* destination);
 void set_Motor_buffer(Motor* origin, Motor* destination);
+void Motor_pid_set_angle(Motor* motor, double angle, int32_t p, int32_t i, int32_t d);
+void Motor_set_raw_value(Motor* motor, double value);
 
 #endif /* SRC_DEVICE_MOTOR_H_ */

@@ -93,7 +93,96 @@ void Motor_Data_Replacement(Motor* origin, Motor* destination) {
 
 	destination->motor_info.stdid = origin->motor_info.stdid;
 
-	destination->motor_info.P_prameter = origin->motor_info.P_prameter;
-	destination->motor_info.I_prameter = origin->motor_info.I_prameter;
-	destination->motor_info.D_prameter = origin->motor_info.D_prameter;
+	destination->motor_info.P_parameter = origin->motor_info.P_parameter;
+	destination->motor_info.I_parameter = origin->motor_info.I_parameter;
+	destination->motor_info.D_parameter = origin->motor_info.D_parameter;
+}
+
+
+//PID Function, expects a POINTER to motor structure, target ABSOLUTE angle in DEGREES (between 0 and 360), and P/I/D parameters
+void Motor_pid_set_angle(Motor* motor, double angle, int32_t p, int32_t i, int32_t d){
+	Motor temp_motor_buffer;
+	int16_t rx_angle;
+	int16_t input_angle;
+	int16_t current_error;
+	int16_t target_angle;
+	int16_t min_speed=1000;
+	int16_t tolerance=20;
+	int16_t direction=1;
+	double velocity=0;
+	double speed=0;
+
+	input_angle=round(angle/360*8192);
+
+	get_Motor_buffer(motor, &temp_motor_buffer);
+
+
+	temp_motor_buffer.motor_info.P_parameter=p;
+	temp_motor_buffer.motor_info.I_parameter=i;
+	temp_motor_buffer.motor_info.D_parameter=d;
+	rx_angle=temp_motor_buffer.motor_feedback.rx_angle;
+
+	target_angle=input_angle;
+	/*if (target_angle % 8192 !=0){
+		target_angle=target_angle%8192;
+	}*/
+
+	current_error=abs(target_angle-rx_angle);
+
+	//Few decisions to make with statements below
+	//If error is small enough, then velocity=0 (motor doesn't turn)
+	//If error is not small, but motor turns less than 180 degrees, turn as per usual using p*error
+	//If error is not small, but motor needs to turn more than 180 degrees, reverse direction, and error is the error "the other way"
+	//In cases where error is not small, set minimum speed so that the motor doesnt stop turning due to friction
+
+
+	////----------------------------This seciton will likely need to be modified if we try to add in I and D control--------------------////
+
+	if (current_error<tolerance){
+		velocity=0;
+	}
+	else{
+		if (current_error<=4096){
+			direction=1;
+
+			speed=p*current_error;
+
+			if (speed<min_speed){
+				speed=min_speed;
+			}
+
+			velocity=direction*speed;
+		}
+		else{
+			current_error=abs(current_error-8192);
+			direction=-1;
+
+			speed=p*current_error;
+
+			if (speed<min_speed){
+				speed=min_speed;
+			}
+
+			velocity=direction*speed;
+		}
+
+	}
+
+	////----------------------------This seciton will likely need to be modified if we try to add in I and D control--------------------////
+
+	//current_error=3000;
+
+
+
+	temp_motor_buffer.tx_data=velocity;
+	set_Motor_buffer(&temp_motor_buffer,motor);
+
+}
+
+//Sets a raw value to a motor - look at datasheets to see what values the motor supports
+void Motor_set_raw_value(Motor* motor, double value){
+	Motor temp_motor_buffer;
+	get_Motor_buffer(motor, &temp_motor_buffer);
+	temp_motor_buffer.tx_data=value;
+	set_Motor_buffer(&temp_motor_buffer,motor);
 }

@@ -12,6 +12,7 @@
 #include "can.h"
 #include "cmsis_os.h"
 #include "../buzzer.h"
+#include "../Device/Motor.h"
 
 void Gimbal_Task_Function(void const * argument);
 void CAN_Send_Gimbal(int16_t yaw_raw, int16_t pitch_raw);

@@ -47,58 +47,9 @@ void Gimbal_Task_Function(void const * argument)
   for(;;)
   {
 	  HAL_GPIO_TogglePin(LD_C_GPIO_Port, LD_C_Pin);
-	  //CAN_Send_Gimbal(velocity,0);
 
-//	  Motor temp4 = motor_data[4];
-//	  processing you what
-//
-//
-//	  motor_data[4] = temp4;
-//
-//	  Motor_Overwrite(temp4, motor_data[4]); (critical section avoid race condition) Mutex
-//
+	  Motor_set_raw_value(&motor_data[4],15000);
 
-//	  uint8_t motorStatus2[8];
-//
-//	  can_filter_enable(&hcan1);
-//
-//	  memcpy(motorStatus2, can_rx_buffer,8);
-//	  current_angle=(int16_t)(motorStatus2[0] << 8 | motorStatus2[1]);
-//	  //Current angle is absolute
-//	  printf("The current angle is %d\n",current_angle);
-//
-//	  can_filter_disable(&hcan1);
-//	  if (abs(current_angle-4096)<50){
-//		  velocity=0;
-//	  }
-//	  else{
-//		  velocity=3000;
-//	  }
-
-
-
-	  //This part does not work yet, its meant to be a real-time read
-
-/*	  uint8_t motorStatus2[8];
-
-
-	  if (counter==33){
-	  can_filter_enable(&hcan1);
-	  memcpy(motorStatus2, can_rx_buffer,8);
-	  can_filter_disable(&hcan1);
-	  counter=0;
-	  }
-
-	  current_angle=(int16_t)(motorStatus2[0] << 8 | motorStatus2[1]);
-	  if (8192-current_angle<100){
-		  velocity=0;
-	  }
-	  counter++;*/
-
-	  //End of not working part
-
-
-	  //osDelay(500);
 	  osDelay(1);
   }
   /* USER CODE END Gimbal_Task_Function */

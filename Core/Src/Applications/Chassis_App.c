@@ -15,12 +15,13 @@ void Chassis_Task_Func(void const * argument)
 	//buzzer_play_mario(200);
   /* Infinite loop */
   //double i=0;
-  double velocity=-3000;
-  double velocity_3508=500;
+  double vmax=30000;
+  double max_angle=4096;
+  //double velocity_3508=500;
   for(;;)
   {
 	//printf("\nWelcome to RM-EE\n");
-
+/*
 	Motor temp_motor_buffer;
 	Motor temp_motor_buffer_3508;
 
@@ -32,7 +33,10 @@ void Chassis_Task_Func(void const * argument)
 
 	set_Motor_buffer(&temp_motor_buffer,&motor_data[4]);
 	set_Motor_buffer(&temp_motor_buffer_3508,&motor_data[0]);
+*/
 
+	  //Motor_pid_set_angle(&motor_data[4],360,vmax/max_angle,0,0);
+	  Motor_set_raw_value(&motor_data[0],10000);
 	//printf("Hello, the current time is %.2F",i);
 	//i+=0.1;
     //osDelay(500);
