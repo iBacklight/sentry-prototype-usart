@@ -1,2 +1,2 @@
-Gimbal_App.c:24:6:Gimbal_Task_Function	16	static
-Gimbal_App.c:58:6:CAN_Send_Gimbal	24	static
+Gimbal_App.c:24:6:Gimbal_Task_Function	40	static
+Gimbal_App.c:61:6:CAN_Send_Gimbal	24	static

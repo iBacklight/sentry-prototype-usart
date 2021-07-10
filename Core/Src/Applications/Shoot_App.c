@@ -16,7 +16,7 @@ void Shoot_Task_Func(void const * argument)
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
   shoot_init();
-  double fric_wheel_speed=75.5;
+  double fric_wheel_speed=0;
   for(;;)
   {
 	  //Shoot motor on half speed

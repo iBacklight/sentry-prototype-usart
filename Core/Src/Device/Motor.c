@@ -186,3 +186,47 @@ void Motor_set_raw_value(Motor* motor, double value){
 	temp_motor_buffer.tx_data=value;
 	set_Motor_buffer(&temp_motor_buffer,motor);
 }
+
+////----------------------------Bailiang and Haoran's Functions - Archive--------------------////
+
+/*void PID_Control_3508(int target){ // 0- 8192
+    // dead range 50 tolerance,
+    //if is smaller than 50, break;
+    // p * err --> motor
+    Motor motor;
+    get_Motor_buffer(&motor_data[0], &motor);
+    motor.motor_info.err =  (int)(target - motor.motor_feedback.rx_rpm);
+
+    if (50 <= motor.motor_info.err || motor.motor_info.err <= 0) {
+        motor.tx_data =  (int32_t)( 2 * motor.motor_info.err);
+    }
+    else {
+        motor.tx_data = 0; // 5 * (temp_motor_buffer_3508.motor_feedback.rx_angle - angle);
+    }
+
+    set_Motor_buffer(&motor, &motor_data[0]);
+}*/
+
+//int32_t PID_Control_3508_G(int target, Motor *motor) {
+//    //Motor temp_motor_buffer_3508;
+//    get_Motor_buffer(&motor_data[0], motor);
+//    // determine current err
+//    motor->motor_info.err =  (int)( target - motor->motor_feedback.rx_angle);
+//
+//    if (50 <= motor->motor_info.err || motor->motor_info.err <= 0) {
+//        // calculate integer sum
+//        motor->motor_info.i_sum += motor->motor_info.I_parameter * motor->motor_info.err;
+//        // calculate pi(d) output of current motor buffer
+//        motor->motor_info.out =  (int32_t)( 2 * motor->motor_info.err); //+ motor.motor_info.i_sum); //+ motor.motor_info.D_parameter * (motor.motor_info.err - motor.motor_info.pre_err));
+//    }
+//    //motor.motor_info.P_parameter
+//    else {
+//        // keep the motor still within a certain range
+//        motor->motor_info.out = 0; // 5 * (temp_motor_buffer_3508.motor_feedback.rx_angle - angle);
+//    }
+//    //motor.motor_info.pre_err = motor.motor_info.err
+//    // may add a limit to this
+//    return motor->motor_info.out;
+//}
+
+////----------------------------Bailiang and Haoran's Functions - Archive--------------------////

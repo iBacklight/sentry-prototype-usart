@@ -23,6 +23,8 @@ int16_t velocity;
 
 void Gimbal_Task_Function(void const * argument)
 {
+	  double vmax=30000;
+	  double max_angle=4096;
 
 
   /* USER CODE BEGIN Gimbal_Task_Function */
@@ -46,9 +48,10 @@ void Gimbal_Task_Function(void const * argument)
 
   for(;;)
   {
+	  Motor_pid_set_angle(&motor_data[4],360,vmax/max_angle,0,0);
 	  HAL_GPIO_TogglePin(LD_C_GPIO_Port, LD_C_Pin);
 
-	  Motor_set_raw_value(&motor_data[4],15000);
+	  //Motor_set_raw_value(&motor_data[4],0);
 
 	  osDelay(1);
   }
