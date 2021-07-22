@@ -35,8 +35,8 @@ void Chassis_Task_Func(void const * argument)
 	set_Motor_buffer(&temp_motor_buffer_3508,&motor_data[0]);
 */
 
-	  Motor_pid_set_angle(&motor_data[0],360,3,0,0);
-	  //Motor_set_raw_value(&motor_data[0],200);
+	  //Motor_pid_set_angle(&motor_data[0],360,3,0,0);
+	//Motor_set_raw_value(&motor_data[0],200);
 	//printf("Hello, the current time is %.2F",i);
 	//i+=0.1;
     //osDelay(500);

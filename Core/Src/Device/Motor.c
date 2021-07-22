@@ -180,10 +180,11 @@ void Motor_pid_set_angle(Motor* motor, double angle, int32_t p, int32_t i, int32
 }
 
 //Sets a raw value to a motor - look at datasheets to see what values the motor supports
+//Quick reference: P2006 - 10000, M3508 - 16000, GM6020 - 30000
 void Motor_set_raw_value(Motor* motor, double value){
 	Motor temp_motor_buffer;
 	get_Motor_buffer(motor, &temp_motor_buffer);
-	temp_motor_buffer.tx_data=value;
+	temp_motor_buffer.tx_data=(int32_t)value;
 	set_Motor_buffer(&temp_motor_buffer,motor);
 }
 
