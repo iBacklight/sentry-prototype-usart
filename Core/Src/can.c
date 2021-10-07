@@ -21,7 +21,23 @@
 #include "can.h"
 
 /* USER CODE BEGIN 0 */
-
+/*Important CAN Info*/
+//CubeMX will no longer allow the proper time quantas to work, we need to manually set it to as follows each time cubeMX is used to generate code
+//See below for working settins of MX_CAN1_Init, verify each time that this is actually done
+/*
+ * hcan1.Instance = CAN1;
+  hcan1.Init.Prescaler = 3;
+  hcan1.Init.Mode = CAN_MODE_NORMAL;
+  hcan1.Init.SyncJumpWidth = CAN_SJW_1TQ;
+  hcan1.Init.TimeSeg1 = CAN_BS1_10TQ;
+  hcan1.Init.TimeSeg2 = CAN_BS2_3TQ;
+  hcan1.Init.TimeTriggeredMode = DISABLE;
+  hcan1.Init.AutoBusOff = ENABLE;
+  hcan1.Init.AutoWakeUp = ENABLE;
+  hcan1.Init.AutoRetransmission = ENABLE;
+  hcan1.Init.ReceiveFifoLocked = DISABLE;
+  hcan1.Init.TransmitFifoPriority = ENABLE;
+ */
 /* USER CODE END 0 */
 
 CAN_HandleTypeDef hcan1;

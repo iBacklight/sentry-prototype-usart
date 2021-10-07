@@ -20,6 +20,12 @@ void Chassis_Task_Func(void const * argument)
   double distance = -1.0;
 
   /* Infinite loop */
+
+  //double i=0;
+  double vmax=16000;
+  double max_angle=4096;
+  //double velocity_3508=500;
+
   for(;;)
   {
 	if(direction == CLOCKWISE){
@@ -34,19 +40,6 @@ void Chassis_Task_Func(void const * argument)
 		}
 		Motor_set_raw_value(&motor_data[0], vel);
 
-//		if(direction == CLOCKWISE){
-//			// give time counter here
-//			t++;
-//			if(t>=500)
-//				period_counter = 0;
-//				direction = COUNTER_CLOCKWISE;
-//			}
-//			else if(t>=400)
-//				vel += 1;
-//			else
-//				vel=-1000;
-//			Motor_set_raw_value(&motor_data[0], vel);
-//			osDelay(1);
 	}
 	else{
 		/* Counter Clockwise Direction */
@@ -58,20 +51,8 @@ void Chassis_Task_Func(void const * argument)
 			vel=1000;
 		}
 		Motor_set_raw_value(&motor_data[0], vel);
-
-//		t--;
-//		if(t<=0){
-//			period_counter = 0;
-//			direction = CLOCKWISE;
-//		}
-//		else if(t<=100)
-//			vel -= 10;
-//		else
-//			vel=1000;
-//		Motor_set_raw_value(&motor_data[0], vel);
-//		osDelay(1);
+		osDelay(1);
 	}
-
 
 	/*Ultra Sound Sensor test started here*/
 	// trigger the sensor to launch ultraSound wave
@@ -92,34 +73,38 @@ void Chassis_Task_Func(void const * argument)
 
 }
 
-/* USER CODE END Chassis_Task_Func */
+
 double UltraSoundFindDistance(void){
-	    // Timer 13 set to pre-scalar as 100us per cnt
-		HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
+	/*
+	 *  Currently not used
+	 */
 
-	    double dis = -1.0;
-		uint32_t val = 0;
-		GPIO_PinState echo;
+	// Timer 13 set to pre-scalar as 100us per cnt
+	HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
 
-		HAL_GPIO_WritePin(UltraSound_Trig_Port, UltraSound_Trig, GPIO_PIN_SET);
-		delay_us(10);
-		HAL_GPIO_WritePin(UltraSound_Trig_Port, UltraSound_Trig, GPIO_PIN_RESET);
-		//TIM13->CNT = 0;
+	double dis = -1.0;
+	uint32_t val = 0;
+	GPIO_PinState echo;
 
-		// Wait for response
-		while((echo = HAL_GPIO_ReadPin(UltraSound_Echo_Port, UltraSound_Echo)) == GPIO_PIN_RESET);
-		//if( HAL_TIM_Base_Start(&htim13) == HAL_OK){
-			val = __HAL_TIM_GET_COUNTER(&htim13); //ideally equal to 0 here
-			//Getting response
-			while( (echo = HAL_GPIO_ReadPin(UltraSound_Echo_Port, UltraSound_Echo)) == GPIO_PIN_SET);
-			//togglePin LD / buzzer
-			//if(HAL_TIM_Base_Stop(&htim13) == HAL_OK){
-				val = __HAL_TIM_GET_COUNTER(&htim13) - val;
-				//Calculate distance
-				dis = val * 0.1 * (0.34 * 0.5) * 10;//unit: cm
-			//}
+	HAL_GPIO_WritePin(UltraSound_Trig_Port, UltraSound_Trig, GPIO_PIN_SET);
+	delay_us(10);
+	HAL_GPIO_WritePin(UltraSound_Trig_Port, UltraSound_Trig, GPIO_PIN_RESET);
+	//TIM13->CNT = 0;
+
+	// Wait for response
+	while((echo = HAL_GPIO_ReadPin(UltraSound_Echo_Port, UltraSound_Echo)) == GPIO_PIN_RESET);
+	//if( HAL_TIM_Base_Start(&htim13) == HAL_OK){
+		val = __HAL_TIM_GET_COUNTER(&htim13); //ideally equal to 0 here
+		//Getting response
+		while( (echo = HAL_GPIO_ReadPin(UltraSound_Echo_Port, UltraSound_Echo)) == GPIO_PIN_SET);
+		//togglePin LD / buzzer
+		//if(HAL_TIM_Base_Stop(&htim13) == HAL_OK){
+			val = __HAL_TIM_GET_COUNTER(&htim13) - val;
+			//Calculate distance
+			dis = val * 0.1 * (0.34 * 0.5) * 10;//unit: cm
 		//}
-		return dis;
+	//}
+	return dis;
 }
 
 void delay_us(uint32_t delay_us)
@@ -136,3 +121,4 @@ void delay_us(uint32_t delay_us)
     }
   }
 }
+/* USER CODE END Chassis_Task_Func */

@@ -47,10 +47,12 @@ typedef struct {
 
 }Motor;
 
-// first 4th motor will use 0x200, last 4th motor will use 0x1FF
+// first 4 motors will use 0x200, last 4 motors will use 0x1FF
 // motor_data[0]: first 	3508
 // motor_data[1]: second 	3508
 // motor_data[2]: third 	3508
+
+// motor_data[3]: first     2006
 
 // motor_data[4]: first 	6020
 // motor_data[5]: second 	6020
