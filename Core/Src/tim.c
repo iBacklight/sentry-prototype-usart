@@ -27,6 +27,7 @@
 TIM_HandleTypeDef htim4;
 TIM_HandleTypeDef htim12;
 TIM_HandleTypeDef htim14;
+TIM_HandleTypeDef htim13;
 
 /* TIM4 init function */
 void MX_TIM4_Init(void)
@@ -108,6 +109,25 @@ void MX_TIM14_Init(void)
 
 }
 
+/* TIM13 init function */
+void MX_TIM13_Init(void)
+{
+
+  htim13.Instance = TIM13;
+  htim13.Init.Prescaler = 8399;
+  htim13.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim13.Init.Period = 4999;
+  htim13.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim13.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim13) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  __HAL_TIM_CLEAR_IT(&htim13, TIM_IT_UPDATE);
+}
+
+
 void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef* tim_pwmHandle)
 {
 
@@ -151,8 +171,24 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)
     HAL_NVIC_EnableIRQ(TIM8_TRG_COM_TIM14_IRQn);
   /* USER CODE BEGIN TIM14_MspInit 1 */
 
-  /* USER CODE END TIM14_MspInit 1 */
+  /* USER CODE END TIM13_MspInit 1 */
   }
+  if(tim_baseHandle->Instance==TIM13)
+    {
+    /* USER CODE BEGIN TIM13_MspInit 0 */
+
+    /* USER CODE END TIM13_MspInit 0 */
+      /* TIM13 clock enable */
+      __HAL_RCC_TIM13_CLK_ENABLE();
+
+      /* TIM13 interrupt Init */
+      HAL_NVIC_SetPriority(TIM8_UP_TIM13_IRQn, 1, 0);
+      HAL_NVIC_EnableIRQ(TIM8_UP_TIM13_IRQn);
+    /* USER CODE BEGIN TIM14_MspInit 1 */
+
+    /* USER CODE END TIM14_MspInit 1 */
+    }
+
 }
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
 {

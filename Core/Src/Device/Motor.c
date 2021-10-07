@@ -135,9 +135,7 @@ void Motor_pid_set_angle(Motor* motor, double angle, int32_t p, int32_t i, int32
 	//If error is not small, but motor needs to turn more than 180 degrees, reverse direction, and error is the error "the other way"
 	//In cases where error is not small, set minimum speed so that the motor doesnt stop turning due to friction
 
-
 	////----------------------------This seciton will likely need to be modified if we try to add in I and D control--------------------////
-
 	if (current_error<tolerance){
 		velocity=0;
 	}
@@ -169,7 +167,6 @@ void Motor_pid_set_angle(Motor* motor, double angle, int32_t p, int32_t i, int32
 	}
 
 	////----------------------------This seciton will likely need to be modified if we try to add in I and D control--------------------////
-
 	//current_error=3000;
 
 

@@ -81,6 +81,11 @@ void Error_Handler(void);
 #define LED_Red_GPIO_Port GPIOE
 #define LED_Green_Pin GPIO_PIN_14
 #define LED_Green_GPIO_Port GPIOF
+#define UltraSound_Trig GPIO_PIN_5
+#define UltraSound_Echo GPIO_PIN_10
+#define UltraSound_Trig_Port GPIOE
+#define UltraSound_Echo_Port GPIOF
+
 /* USER CODE BEGIN Private defines */
 
 TIM_HandleTypeDef htim4;

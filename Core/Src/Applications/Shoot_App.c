@@ -19,12 +19,11 @@ void Shoot_Task_Func(void const * argument)
   double fric_wheel_speed=75.5;
   for(;;)
   {
-	  //Shoot motor on half speed
+	//Shoot motor on half speed
 	//__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1,1500);
 	//__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3,1500);
-
-	fric_wheel_set_speed(fric_wheel_speed);
-	HAL_GPIO_TogglePin(LD_A_GPIO_Port,LD_A_Pin);
+	//fric_wheel_set_speed(fric_wheel_speed);
+	//HAL_GPIO_TogglePin(LD_A_GPIO_Port,LD_A_Pin);
     osDelay(500);
     osDelay(1);
   }
@@ -53,5 +52,4 @@ void fric_wheel_set_speed(double percent){
 
 	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1,input);
 	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3,input);
-
 }

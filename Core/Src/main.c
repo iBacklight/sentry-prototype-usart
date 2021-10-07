@@ -65,7 +65,7 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+uint32_t period_counter = 0;
 
 
 /* USER CODE END 0 */
@@ -103,14 +103,13 @@ int main(void)
   MX_TIM12_Init();
   MX_UART7_Init();
   MX_TIM14_Init();
+  MX_TIM13_Init();
   /* USER CODE BEGIN 2 */
 
   buzzer_init();
   HAL_CAN_Start(&hcan1);
-  HAL_TIM_Base_Start_IT(&htim14);
-
-
-
+  //HAL_TIM_Base_Start_IT(&htim14);
+  HAL_TIM_Base_Start_IT(&htim13);
 
   /* USER CODE END 2 */
 
@@ -190,12 +189,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* USER CODE BEGIN Callback 0 */
   if (htim->Instance == TIM14){
-		HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
+	HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
   }
 
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM5) {
     HAL_IncTick();
+  }
+
+  if(htim->Instance == TIM13)
+  {
+	 period_counter++;
   }
 
   /* USER CODE BEGIN Callback 1 */

@@ -5,10 +5,9 @@
  *      Author: AzureRin
  */
 
+#include <string.h>
 #include "Gimbal_App.h"
 #include "Timer_App.h"
-
-
 
 static uint8_t chassis_can_send_data[8];
 static CAN_TxHeaderTypeDef  chassis_tx_message;
@@ -23,34 +22,25 @@ int16_t velocity;
 
 void Gimbal_Task_Function(void const * argument)
 {
-
-
-  /* USER CODE BEGIN Gimbal_Task_Function */
-  /* Infinite loop */
-	//buzzer_play_chromatic(100);
-
-	//buzzer_play_mario(200);
-	//int16_t message=7500;
-
-	HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
-	velocity=3000;
-	//can_filter_enable(&hcan1);
-
-	//Variables for a part that doesn't work yet
-/*
-	uint16_t counter=0;*/
-
-	//End of variables that doesn't work
-
-
-
+  char pdata[16];
+  char* des = "123";
   for(;;)
   {
-	  HAL_GPIO_TogglePin(LD_C_GPIO_Port, LD_C_Pin);
+	  if (HAL_UART_Receive(&huart7, (uint8_t*)pdata, 3, HAL_MAX_DELAY) == HAL_OK){
+		  HAL_GPIO_WritePin(GPIOG, LD_H_Pin, GPIO_PIN_RESET);
+		  if(strcmp(pdata, des) == 0){
+			  HAL_GPIO_WritePin(GPIOG, LD_D_Pin, GPIO_PIN_RESET);
+		  }
+//		  switch(pdata[0])
+//		  {
+//			  case '0': HAL_GPIO_WritePin(GPIOG, LD_A_Pin, GPIO_PIN_RESET);HAL_GPIO_WritePin(GPIOG, LD_B_Pin, GPIO_PIN_SET);HAL_GPIO_WritePin(GPIOG, LD_C_Pin, GPIO_PIN_SET);break;
+//			  case '1': HAL_GPIO_WritePin(GPIOG, LD_B_Pin, GPIO_PIN_RESET);HAL_GPIO_WritePin(GPIOG, LD_A_Pin, GPIO_PIN_SET);HAL_GPIO_WritePin(GPIOG, LD_C_Pin, GPIO_PIN_SET);break;
+//			  case '2': HAL_GPIO_WritePin(GPIOG, LD_C_Pin, GPIO_PIN_RESET);HAL_GPIO_WritePin(GPIOG, LD_B_Pin, GPIO_PIN_SET);HAL_GPIO_WritePin(GPIOG, LD_A_Pin, GPIO_PIN_SET);break;
+//			  case '123': HAL_GPIO_WritePin(GPIOG, LD_D_Pin, GPIO_PIN_RESET);HAL_GPIO_WritePin(GPIOG, LD_A_Pin, GPIO_PIN_SET);HAL_GPIO_WritePin(GPIOG, LD_B_Pin, GPIO_PIN_SET);HAL_GPIO_WritePin(GPIOG, LD_C_Pin, GPIO_PIN_SET);break;
+//		  }
 
-	  Motor_set_raw_value(&motor_data[4],15000);
-
-	  osDelay(1);
+	  }
+	  //osDelay(1);
   }
   /* USER CODE END Gimbal_Task_Function */
 }
@@ -72,9 +62,7 @@ void CAN_Send_Gimbal(int16_t yaw_raw, int16_t pitch_raw)
     chassis_can_send_data[6] = 0;
     chassis_can_send_data[7] = 0;
 
-
     HAL_CAN_AddTxMessage(&hcan1, &chassis_tx_message, chassis_can_send_data, &send_mail_box);
-
 
 //    if (check==HAL_OK){
 //    	buzzer_play_f1(1000);

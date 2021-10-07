@@ -1,3 +1,3 @@
-Shoot_App.c:14:6:Shoot_Task_Func	32	static
-Shoot_App.c:34:6:shoot_init	8	static
-Shoot_App.c:48:6:fric_wheel_set_speed	32	static
+Shoot_App.c:14:6:Shoot_Task_Func	24	static
+Shoot_App.c:33:6:shoot_init	8	static
+Shoot_App.c:47:6:fric_wheel_set_speed	32	static
