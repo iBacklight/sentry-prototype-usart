@@ -14,6 +14,7 @@ RM := rm -rf
 -include Middlewares/Third_Party/FreeRTOS/Source/subdir.mk
 -include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
+-include Core/Src/Device/subdir.mk
 -include Core/Src/Applications/subdir.mk
 -include Core/Src/subdir.mk
 -include subdir.mk
@@ -59,8 +60,8 @@ all: main-build
 main-build: Sentry_uarm_2020_new_new.elf secondary-outputs
 
 # Tool invocations
-Sentry_uarm_2020_new_new.elf: $(OBJS) $(USER_OBJS) D:\Robomaster\Sentry_SuperNew\STM32F427IIHX_FLASH.ld
-	arm-none-eabi-gcc -o "Sentry_uarm_2020_new_new.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\Robomaster\Sentry_SuperNew\STM32F427IIHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Sentry_uarm_2020_new_new.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Sentry_uarm_2020_new_new.elf: $(OBJS) $(USER_OBJS) D:\Robomaster\Sentry_SuperSuperNew\sentry\STM32F427IIHX_FLASH.ld
+	arm-none-eabi-gcc -o "Sentry_uarm_2020_new_new.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\Robomaster\Sentry_SuperSuperNew\sentry\STM32F427IIHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Sentry_uarm_2020_new_new.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

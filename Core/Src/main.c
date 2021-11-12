@@ -30,6 +30,7 @@
 #include "Applications/Chassis_App.h"
 #include "Applications/Gimbal_App.h"
 #include "Applications/Shoot_App.h"
+#include "buzzer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -189,19 +190,19 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* USER CODE BEGIN Callback 0 */
   if (htim->Instance == TIM14){
-	HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
+	//HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
+  }
+
+  if(htim->Instance == TIM13)
+  {
+	 period_counter++;
+	 HAL_GPIO_TogglePin(LED_Red_GPIO_Port,LED_Red_Pin);
   }
 
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM5) {
     HAL_IncTick();
   }
-
-  if(htim->Instance == TIM13)
-  {
-	 period_counter++;
-  }
-
   /* USER CODE BEGIN Callback 1 */
 
   /* USER CODE END Callback 1 */

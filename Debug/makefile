@@ -1,6 +1,5 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
-# Toolchain: GNU Tools for STM32 (9-2020-q2-update)
 ################################################################################
 
 -include ../makefile.init
@@ -35,12 +34,6 @@ endif
 
 -include ../makefile.defs
 
-OPTIONAL_TOOL_DEPS := \
-$(wildcard ../makefile.defs) \
-$(wildcard ../makefile.init) \
-$(wildcard ../makefile.targets) \
-
-
 BUILD_ARTIFACT_NAME := Sentry_uarm_2020_new_new
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX := 
@@ -67,22 +60,22 @@ all: main-build
 main-build: Sentry_uarm_2020_new_new.elf secondary-outputs
 
 # Tool invocations
-Sentry_uarm_2020_new_new.elf: $(OBJS) $(USER_OBJS) D:\UA\UARM\EE\code\sentry\STM32F427IIHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Sentry_uarm_2020_new_new.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\UA\UARM\EE\code\sentry\STM32F427IIHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Sentry_uarm_2020_new_new.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Sentry_uarm_2020_new_new.elf: $(OBJS) $(USER_OBJS) D:\Robomaster\Sentry_SuperSuperNew\sentry\STM32F427IIHX_FLASH.ld
+	arm-none-eabi-gcc -o "Sentry_uarm_2020_new_new.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\Robomaster\Sentry_SuperSuperNew\sentry\STM32F427IIHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Sentry_uarm_2020_new_new.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+default.size.stdout: $(EXECUTABLES)
 	arm-none-eabi-size  $(EXECUTABLES)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Sentry_uarm_2020_new_new.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+Sentry_uarm_2020_new_new.list: $(EXECUTABLES)
 	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Sentry_uarm_2020_new_new.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Sentry_uarm_2020_new_new.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+Sentry_uarm_2020_new_new.bin: $(EXECUTABLES)
 	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "Sentry_uarm_2020_new_new.bin"
 	@echo 'Finished building: $@'
 	@echo ' '

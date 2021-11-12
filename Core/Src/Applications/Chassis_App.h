@@ -13,14 +13,14 @@
 #include "../buzzer.h"
 #include "../Device/Motor.h"
 
-#define CLOCKWISE 0
-#define COUNTER_CLOCKWISE 1
+#define CLOCKWISE 1
+#define COUNTER_CLOCKWISE -1
 
 extern uint32_t period_counter;
 
 void Chassis_Task_Func(void const * argument);
 double UltraSoundFindDistance(void);
 void delay_us(uint32_t delay_us);
-
+void motor_move_time (uint32_t time_s, double vel, int direction);
 
 #endif /* SRC_APPLICATIONS_CHASSIS_APP_H_ */

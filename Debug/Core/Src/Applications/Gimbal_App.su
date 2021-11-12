@@ -1,7 +1,2 @@
-<<<<<<< HEAD
-Gimbal_App.c:23:6:Gimbal_Task_Function	24	static
-Gimbal_App.c:48:6:CAN_Send_Gimbal	24	static
-=======
-Gimbal_App.c:24:6:Gimbal_Task_Function	40	static
-Gimbal_App.c:61:6:CAN_Send_Gimbal	24	static
->>>>>>> 5ac59bfdd46c862823b9d024dd2f89cce0e76fe7
+Gimbal_App.c:23:6:Gimbal_Task_Function	64	static
+Gimbal_App.c:73:6:CAN_Send_Gimbal	24	static

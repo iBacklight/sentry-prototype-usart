@@ -1,0 +1,7 @@
+Motor.c:7:6:Motor_Data_Read	24	static
+Motor.c:30:6:Motor_Data_Sent	64	static
+Motor.c:86:6:Motor_Data_Replacement	0	static
+Motor.c:72:6:get_Motor_buffer	0	static
+Motor.c:78:6:set_Motor_buffer	0	static
+Motor.c:103:6:Motor_pid_set_angle	64	static
+Motor.c:181:6:Motor_set_raw_value	40	static
