@@ -3,10 +3,5 @@ Motor.c:30:6:Motor_Data_Sent	48	static
 Motor.c:72:6:get_Motor_buffer	16	static
 Motor.c:78:6:set_Motor_buffer	16	static
 Motor.c:86:6:Motor_Data_Replacement	16	static
-<<<<<<< HEAD
-Motor.c:103:6:Motor_pid_set_angle	96	static
-Motor.c:180:6:Motor_set_raw_value	56	static
-=======
 Motor.c:103:6:Motor_pid_set_angle	104	static
-Motor.c:184:6:Motor_set_raw_value	56	static
->>>>>>> 5ac59bfdd46c862823b9d024dd2f89cce0e76fe7
+Motor.c:181:6:Motor_set_raw_value	56	static

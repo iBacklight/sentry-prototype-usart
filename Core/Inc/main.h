@@ -17,6 +17,17 @@
   *
   ******************************************************************************
   */
+
+/**
+  ******************************************************************************
+  * Please write all peripherals initialized manually here
+  * ENSURE ALL MANUAL INITIALIZATION CODES ARE BETWEEN USER CODE BEGIN AND USER CODE END
+  ******************************************************************************
+  * Peripheral name:
+  * Peripheral GPIO Pins:
+  * Files modified:
+  ******************************************************************************
+  */
 /* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -58,6 +69,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define UltraSound_Trig_Pin GPIO_PIN_5
+#define UltraSound_Trig_GPIO_Port GPIOE
 #define LD_A_Pin GPIO_PIN_8
 #define LD_A_GPIO_Port GPIOG
 #define LD_B_Pin GPIO_PIN_7
@@ -70,6 +83,8 @@ void Error_Handler(void);
 #define LD_E_GPIO_Port GPIOG
 #define LD_F_Pin GPIO_PIN_3
 #define LD_F_GPIO_Port GPIOG
+#define UltraSound_Echo_Pin GPIO_PIN_10
+#define UltraSound_Echo_GPIO_Port GPIOF
 #define LD_G_Pin GPIO_PIN_2
 #define LD_G_GPIO_Port GPIOG
 #define Button_Pin GPIO_PIN_2
@@ -81,11 +96,6 @@ void Error_Handler(void);
 #define LED_Red_GPIO_Port GPIOE
 #define LED_Green_Pin GPIO_PIN_14
 #define LED_Green_GPIO_Port GPIOF
-#define UltraSound_Trig GPIO_PIN_5
-#define UltraSound_Echo GPIO_PIN_10
-#define UltraSound_Trig_Port GPIOE
-#define UltraSound_Echo_Port GPIOF
-
 /* USER CODE BEGIN Private defines */
 
 TIM_HandleTypeDef htim4;

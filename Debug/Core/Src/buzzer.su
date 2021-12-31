@@ -23,6 +23,6 @@ buzzer.c:200:6:buzzer_play_gs2	16	static
 buzzer.c:209:6:buzzer_rest	16	static
 buzzer.c:213:6:buzzer_play_scale	16	static
 buzzer.c:224:6:buzzer_play_chromatic	16	static
-buzzer.c:240:6:buzzer_play_o_canada	56	static
-buzzer.c:266:6:buzzer_play_mario	56	static
-buzzer.c:291:6:buzzer_play_ynk	56	static
+buzzer.c:240:6:buzzer_play_o_canada	64	static
+buzzer.c:266:6:buzzer_play_mario	64	static
+buzzer.c:291:6:buzzer_play_ynk	64	static

@@ -55,6 +55,7 @@ void Gimbal_Task_Function(void const * argument)
 		  if(strcmp(pdata, des) == 0){
 			  HAL_GPIO_WritePin(GPIOG, LD_D_Pin, GPIO_PIN_RESET);
 		  }
+	  }
 //		  switch(pdata[0])
 //		  {
 //			  case '0': HAL_GPIO_WritePin(GPIOG, LD_A_Pin, GPIO_PIN_RESET);HAL_GPIO_WritePin(GPIOG, LD_B_Pin, GPIO_PIN_SET);HAL_GPIO_WritePin(GPIOG, LD_C_Pin, GPIO_PIN_SET);break;
@@ -67,6 +68,7 @@ void Gimbal_Task_Function(void const * argument)
   }
   /* USER CODE END Gimbal_Task_Function */
 }
+
 
 void CAN_Send_Gimbal(int16_t yaw_raw, int16_t pitch_raw)
 {

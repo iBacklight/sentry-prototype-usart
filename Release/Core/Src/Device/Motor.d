@@ -1,5 +1,5 @@
-Core/Src/Applications/Timer_App.o: ../Core/Src/Applications/Timer_App.c \
- ../Core/Src/Applications/Timer_App.h ../Core/Inc/main.h \
+Core/Src/Device/Motor.o: ../Core/Src/Device/Motor.c \
+ ../Core/Src/Device/Motor.h ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -46,11 +46,9 @@ Core/Src/Applications/Timer_App.o: ../Core/Src/Applications/Timer_App.c \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
- ../Core/Src/Applications/../buzzer.h ../Core/Inc/can.h \
- ../Core/Inc/main.h ../Core/Inc/../Src/Device/Motor.h \
- ../Core/Src/Applications/../Device/Motor.h
+ ../Core/Inc/can.h ../Core/Inc/main.h ../Core/Inc/../Src/Device/Motor.h
 
-../Core/Src/Applications/Timer_App.h:
+../Core/Src/Device/Motor.h:
 
 ../Core/Inc/main.h:
 
@@ -146,12 +144,8 @@ Core/Src/Applications/Timer_App.o: ../Core/Src/Applications/Timer_App.c \
 
 ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h:
 
-../Core/Src/Applications/../buzzer.h:
-
 ../Core/Inc/can.h:
 
 ../Core/Inc/main.h:
 
 ../Core/Inc/../Src/Device/Motor.h:
-
-../Core/Src/Applications/../Device/Motor.h:

@@ -47,7 +47,9 @@ Core/Src/Applications/Chassis_App.o: \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
- ../Core/Src/Applications/../buzzer.h
+ ../Core/Src/Applications/../buzzer.h \
+ ../Core/Src/Applications/../Device/Motor.h ../Core/Inc/can.h \
+ ../Core/Inc/main.h ../Core/Inc/../Src/Device/Motor.h ../Core/Inc/tim.h
 
 ../Core/Src/Applications/Chassis_App.h:
 
@@ -146,3 +148,13 @@ Core/Src/Applications/Chassis_App.o: \
 ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h:
 
 ../Core/Src/Applications/../buzzer.h:
+
+../Core/Src/Applications/../Device/Motor.h:
+
+../Core/Inc/can.h:
+
+../Core/Inc/main.h:
+
+../Core/Inc/../Src/Device/Motor.h:
+
+../Core/Inc/tim.h:
