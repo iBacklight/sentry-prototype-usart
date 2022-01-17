@@ -29,6 +29,7 @@ typedef struct {
 	int32_t D_parameter;
 }Motor_Info;
 
+// CAN rx feedback structure
 typedef struct {
 	int16_t rx_angle;
 	int16_t rx_rpm;
