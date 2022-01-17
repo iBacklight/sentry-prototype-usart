@@ -22,17 +22,19 @@ int16_t velocity;
 
 void Gimbal_Task_Function(void const * argument)
 {
-  char pdata[16];
-  char* des = "123";
-
+  char *pdata; // data packet from computer
+  char *yaw;
   double vmax=30000;
   double max_angle=4096;
 
+  int32_t yaw_data = 0;
+
+  yaw = malloc (4);
+  pdata = malloc(7); // packet total size, referring to comm protocol
 
   /* USER CODE BEGIN Gimbal_Task_Function */
   /* Infinite loop */
 	//buzzer_play_chromatic(100);
-
 	//buzzer_play_mario(200);
 	//int16_t message=7500;
 
@@ -50,12 +52,14 @@ void Gimbal_Task_Function(void const * argument)
   {
 	  //Motor_pid_set_angle(&motor_data[4],360,vmax/max_angle,0,0);
 	  //HAL_GPIO_TogglePin(LD_C_GPIO_Port, LD_C_Pin);
-	  if (HAL_UART_Receive(&huart7, (uint8_t*)pdata, 3, HAL_MAX_DELAY) == HAL_OK){
+	  if (HAL_UART_Receive(&huart7, (char*)pdata, 7, HAL_MAX_DELAY) == HAL_OK){
 		  HAL_GPIO_WritePin(GPIOG, LD_H_Pin, GPIO_PIN_RESET);
-		  if(strcmp(pdata, des) == 0){
-			  HAL_GPIO_WritePin(GPIOG, LD_D_Pin, GPIO_PIN_RESET);
-		  }
+		  yaw_data = parse_pack(pdata, yaw);
+//		  if(strcmp(pdata, des) == 0){
+//			  HAL_GPIO_WritePin(GPIOG, LD_D_Pin, GPIO_PIN_RESET);
+//		  }
 	  }
+//		  //Only for testing UART
 //		  switch(pdata[0])
 //		  {
 //			  case '0': HAL_GPIO_WritePin(GPIOG, LD_A_Pin, GPIO_PIN_RESET);HAL_GPIO_WritePin(GPIOG, LD_B_Pin, GPIO_PIN_SET);HAL_GPIO_WritePin(GPIOG, LD_C_Pin, GPIO_PIN_SET);break;
@@ -63,12 +67,34 @@ void Gimbal_Task_Function(void const * argument)
 //			  case '2': HAL_GPIO_WritePin(GPIOG, LD_C_Pin, GPIO_PIN_RESET);HAL_GPIO_WritePin(GPIOG, LD_B_Pin, GPIO_PIN_SET);HAL_GPIO_WritePin(GPIOG, LD_A_Pin, GPIO_PIN_SET);break;
 //			  case '123': HAL_GPIO_WritePin(GPIOG, LD_D_Pin, GPIO_PIN_RESET);HAL_GPIO_WritePin(GPIOG, LD_A_Pin, GPIO_PIN_SET);HAL_GPIO_WritePin(GPIOG, LD_B_Pin, GPIO_PIN_SET);HAL_GPIO_WritePin(GPIOG, LD_C_Pin, GPIO_PIN_SET);break;
 //		  }
-	  //Motor_set_raw_value(&motor_data[4],0);
+	  HAL_GPIO_WritePin(GPIOG, LD_B_Pin, GPIO_PIN_RESET);
+	  Motor_set_raw_value(&motor_data[0], yaw_data);
 	  osDelay(1);
   }
+  free(yaw);
+  free(pdata);
+
   /* USER CODE END Gimbal_Task_Function */
 }
 
+int32_t parse_pack(char* pack, char* yaw_data){
+
+    char pdata[(strlen(pack)+1)]; //pack content size + '\0'
+    int32_t yaw = 0;
+    strcpy(pdata, pack);
+
+    if (pdata[0] == 0x41){ //check header， modify here
+    	HAL_GPIO_WritePin(GPIOG, LD_A_Pin, GPIO_PIN_RESET);
+		for(int i=0;i<4;i++){
+            yaw_data[i] = pdata[6-i-1] - '0'; // decoding, referring to the vision code.
+            yaw += ((int)yaw_data[i])*(10^i);
+		}
+    }
+	else
+		yaw_data[0] = NULL;
+
+    return yaw;
+}
 
 void CAN_Send_Gimbal(int16_t yaw_raw, int16_t pitch_raw)
 {
