@@ -13,9 +13,9 @@
 #include "cmsis_os.h"
 #include "../buzzer.h"
 #include "../Device/Motor.h"
+#include "Timer_App.h"
 
 void Gimbal_Task_Function(void const * argument);
 void CAN_Send_Gimbal(int16_t yaw_raw, int16_t pitch_raw);
-int32_t parse_pack(char* pack, char* yaw_data);
 
 #endif /* SRC_APPLICATIONS_GIMBAL_APP_H_ */

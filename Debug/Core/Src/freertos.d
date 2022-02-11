@@ -50,6 +50,7 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
  ../Core/Src/Applications/../Device/Motor.h ../Core/Inc/can.h \
  ../Core/Inc/main.h ../Core/Inc/../Src/Device/Motor.h \
  ../Core/Src/Applications/Gimbal_App.h \
+ ../Core/Src/Applications/Timer_App.h \
  ../Core/Src/Applications/Shoot_App.h \
  ../Core/Src/Applications/Timer_App.h
 
@@ -160,6 +161,8 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
 ../Core/Inc/../Src/Device/Motor.h:
 
 ../Core/Src/Applications/Gimbal_App.h:
+
+../Core/Src/Applications/Timer_App.h:
 
 ../Core/Src/Applications/Shoot_App.h:
 

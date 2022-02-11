@@ -47,8 +47,6 @@ void Chassis_Task_Func(void const * argument)
 				period_counter = 0;
 				direction = COUNTER_CLOCKWISE;
 			}
-
-
 		}
 
 		if(direction == COUNTER_CLOCKWISE){
@@ -57,12 +55,10 @@ void Chassis_Task_Func(void const * argument)
 				period_counter = 0;
 				direction = CLOCKWISE;
 			}
-
 		}
 
 		//Calculate velocity via direction * speed
 		vel=direction*speed;
-
 
 		//Send velocity to motor
 		//Currently only sets value to one motor, need to set to all 3, and function should be written to control the RPM rather than just setting raw value
@@ -86,10 +82,7 @@ void Chassis_Task_Func(void const * argument)
 //	}
     //osDelay(10);
   }
-
 }
-
-
 
 //Ultrasound sensor functions, currently not in use
 double UltraSoundFindDistance(void){
