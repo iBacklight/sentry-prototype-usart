@@ -21,6 +21,6 @@ extern uint32_t period_counter;
 void Chassis_Task_Func(void const * argument);
 double UltraSoundFindDistance(void);
 void delay_us(uint32_t delay_us);
-void motor_move_time (uint32_t time_s, double vel, int direction);
+void motor_move_period(uint32_t cycles, double vel, int32_t direction);
 
 #endif /* SRC_APPLICATIONS_CHASSIS_APP_H_ */

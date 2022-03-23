@@ -29,11 +29,6 @@ void Gimbal_Task_Function(void const * argument)
   double vmax=30000;
   double max_angle=4096;
 
-  int32_t yaw_data = 0;
-
-  yaw = malloc (4);
-  pdata = malloc(7); // packet total size, referring to comm protocol
-
   /* USER CODE BEGIN Gimbal_Task_Function */
   /* Infinite loop */
 	//buzzer_play_chromatic(100);
@@ -69,11 +64,9 @@ void Gimbal_Task_Function(void const * argument)
 ////			  case '123': HAL_GPIO_WritePin(GPIOG, LD_D_Pin, GPIO_PIN_RESET);HAL_GPIO_WritePin(GPIOG, LD_A_Pin, GPIO_PIN_SET);HAL_GPIO_WritePin(GPIOG, LD_B_Pin, GPIO_PIN_SET);HAL_GPIO_WritePin(GPIOG, LD_C_Pin, GPIO_PIN_SET);break;
 ////		  }
 //	  HAL_GPIO_WritePin(GPIOG, LD_B_Pin, GPIO_PIN_RESET);
-	  Motor_set_raw_value(&motor_data[0], comm_pack.yaw_data);
+//	  Motor_set_raw_value(&motor_data[0], comm_pack.yaw_data);
 //	  osDelay(1);
   }
-  free(yaw);
-  free(pdata);
 
   /* USER CODE END Gimbal_Task_Function */
 }
