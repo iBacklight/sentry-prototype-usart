@@ -1,4 +1,4 @@
-Chassis_App.c:11:6:Chassis_Task_Func	40	static
+Chassis_App.c:11:6:Chassis_Task_Func	48	static
 Chassis_App.c:63:6:motor_move_period	32	static
-Chassis_App.c:94:8:UltraSoundFindDistance	24	static
+Chassis_App.c:94:8:UltraSoundFindDistance	32	static
 Chassis_App.c:127:6:delay_us	24	static

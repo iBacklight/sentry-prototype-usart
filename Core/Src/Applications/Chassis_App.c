@@ -12,7 +12,7 @@ void Chassis_Task_Func(void const * argument)
 {
 
   /* USER CODE BEGIN Chassis_Task_Func */
-	//buzzer_play_mario(200);
+	buzzer_play_mario(200);
 
 
   int32_t direction = CLOCKWISE; // direction of motor
@@ -23,7 +23,7 @@ void Chassis_Task_Func(void const * argument)
   //uint32_t t=0;
   //double distance = -1.0;
   //double i=0;
-  //double vmax=16000;
+  //double vmax=16000;\
   //double max_angle=4096;
   //double velocity_3508=500;
 

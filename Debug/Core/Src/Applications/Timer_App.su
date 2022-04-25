@@ -1,3 +1,1 @@
-Timer_App.c:13:6:Timer_Task_Func	120	static
-Timer_App.c:81:9:parse_pack_indv	56	dynamic
-Timer_App.c:113:14:parse_pack_string	80	static
+Timer_App.c:12:6:Timer_Task_Func	72	static
