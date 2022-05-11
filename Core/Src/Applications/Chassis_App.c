@@ -12,21 +12,12 @@ void Chassis_Task_Func(void const * argument)
 {
 
   /* USER CODE BEGIN Chassis_Task_Func */
-	//buzzer_play_mario(200);
+	buzzer_play_mario(200);
 
 
   int32_t direction = CLOCKWISE; // direction of motor
   double vel = 1000; //Velocity of motor
   uint32_t cycles_s=5; //Time period is 1 seconds per cycle, 5=5 cycles=5s, the timer is controlled by TIM13
-
-  /* Infinite loop */
-  //uint32_t t=0;
-  //double distance = -1.0;
-  //double i=0;
-  //double vmax=16000;
-  //double max_angle=4096;
-  //double velocity_3508=500;
-
   for(;;)
   {
 
@@ -60,10 +51,21 @@ void Chassis_Task_Func(void const * argument)
  * @ Return: Null
  * @ Author: Haoran, Adan
  */
-void motor_move_period(uint32_t cycles, double vel, int32_t direction){
+
+void motor_move_period(uint32_t cycles, double vel, int32_t initial_direction){
+	int32_t direction;
+	//If first loop
+	if (first_loop){
+		direction=initial_direction;
+	}
+	else{
+
+	}
 	//TIMEBASE = (APBxTIMCLK / (Prescaler + 1)) / (Period + 1) (Hertz)
 	//currently set 1 Hz, if want 0.1s, set Prescaler of TIM13 to 839 (10 Hz)
 	if(direction == CLOCKWISE){
+		HAL_GPIO_WritePin(LD_A_GPIO_Port,LD_A_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LD_B_GPIO_Port,LD_B_Pin,GPIO_PIN_SET);
 		// Clockwise Direction
 		// give time counter here
 		if (period_counter >= cycles) {
