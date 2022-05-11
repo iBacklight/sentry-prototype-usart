@@ -15,6 +15,7 @@
 
 #define CLOCKWISE 1
 #define COUNTER_CLOCKWISE -1
+_Bool first_loop;
 
 extern uint32_t period_counter;
 
