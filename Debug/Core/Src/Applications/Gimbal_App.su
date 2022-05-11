@@ -1,3 +1,4 @@
 Gimbal_App.c:23:6:Gimbal_Task_Function	56	static
-Gimbal_App.c:75:9:parse_pack	40	dynamic
-Gimbal_App.c:94:6:CAN_Send_Gimbal	24	static
+Gimbal_App.c:85:9:parse_pack_indv	56	dynamic
+Gimbal_App.c:117:14:parse_pack_string	80	static
+Gimbal_App.c:203:6:CAN_Send_Gimbal	24	static

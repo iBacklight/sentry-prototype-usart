@@ -24,19 +24,6 @@ void Chassis_Task_Func(void const * argument)
 	 // Forever loop
 	  motor_move_period(cycles_s, vel, direction);
 
-	/* Ultra Sound Sensor test started here */
-	// trigger the sensor to launch ultraSound wave
-	//  distance = UltraSoundFindDistance();
-	//	//printf("distance: %d\n", distance);
-	//	if(distance > 0 && distance < 150 ){
-	//		HAL_GPIO_WritePin(LD_A_GPIO_Port,LD_A_Pin, GPIO_PIN_RESET);
-	//		HAL_GPIO_WritePin(LD_B_GPIO_Port,LD_B_Pin, GPIO_PIN_SET);
-	//	}
-	//	else{
-	//		HAL_GPIO_WritePin(LD_B_GPIO_Port,LD_B_Pin, GPIO_PIN_RESET);
-	//		HAL_GPIO_WritePin(LD_A_GPIO_Port,LD_A_Pin, GPIO_PIN_SET);
-	//	}
-	//osDelay(10);
   }
 }
 
@@ -46,17 +33,17 @@ void Chassis_Task_Func(void const * argument)
  * @ Parameter:
  * 		cycles: cycle of a interrupt time unit, current unit : second
  * 		vel: The velocity of the each motor, note: NOT the rpm
- * 		direction:
+ * 		initial_direction: initial direction for motors
  *
  * @ Return: Null
  * @ Author: Haoran, Adan
  */
-
 void motor_move_period(uint32_t cycles, double vel, int32_t initial_direction){
 	int32_t direction;
+
 	//If first loop
 	if (first_loop){
-		direction=initial_direction;
+		direction = initial_direction;
 	}
 	else{
 
@@ -73,7 +60,6 @@ void motor_move_period(uint32_t cycles, double vel, int32_t initial_direction){
 			direction = COUNTER_CLOCKWISE;
 		}
 	}
-
 	if(direction == COUNTER_CLOCKWISE){
 		// Counter Clockwise Direction
 		if (period_counter >= cycles){
@@ -81,7 +67,6 @@ void motor_move_period(uint32_t cycles, double vel, int32_t initial_direction){
 			direction = CLOCKWISE;
 		}
 	}
-
 	//Calculate velocity via direction * speed
 	vel = direction*vel;
 
@@ -140,4 +125,19 @@ void delay_us(uint32_t delay_us)
     }
   }
 }
+
+
+/* Ultra Sound Sensor test started here, put it in for loop in the task if required*/
+// trigger the sensor to launch ultraSound wave
+//  distance = UltraSoundFindDistance();
+//	//printf("distance: %d\n", distance);
+//	if(distance > 0 && distance < 150 ){
+//		HAL_GPIO_WritePin(LD_A_GPIO_Port,LD_A_Pin, GPIO_PIN_RESET);
+//		HAL_GPIO_WritePin(LD_B_GPIO_Port,LD_B_Pin, GPIO_PIN_SET);
+//	}
+//	else{
+//		HAL_GPIO_WritePin(LD_B_GPIO_Port,LD_B_Pin, GPIO_PIN_RESET);
+//		HAL_GPIO_WritePin(LD_A_GPIO_Port,LD_A_Pin, GPIO_PIN_SET);
+//	}
+//osDelay(10);
 /* USER CODE END Chassis_Task_Func */
