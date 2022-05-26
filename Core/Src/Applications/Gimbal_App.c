@@ -25,10 +25,8 @@ void Gimbal_Task_Function(void const * argument)
 
   /* USER CODE BEGIN Gimbal_Task_Function */
   char *pdata; // data packet from computer
-  char *yaw;
   double vmax=30000;
   double max_angle=4096;
-  yaw = malloc (4);
   pdata = malloc(PACKLEN+1);
 
   /* Infinite loop */
@@ -49,12 +47,11 @@ void Gimbal_Task_Function(void const * argument)
   for(;;)
   {
 	  //Motor_pid_set_angle(&motor_data[4],360,vmax/max_angle,0,0);
-	  int pos = 6; // yaw pos
 	 // packet total size, referring to comm protocol
 
 	  if (HAL_UART_Receive(&huart7, (char*)pdata, (PACKLEN+1), HAL_MAX_DELAY) == HAL_OK){
 		  HAL_GPIO_TogglePin(GPIOG, LD_H_Pin);
-		  comm_pack.yaw_data = parse_pack_indv(pdata, yaw, pos);
+		  comm_pack.yaw_data = parse_pack_indv(pdata, YAW_POS, DATALEN);
 		  //comm_pack = parse_pack_string(pdata);
 		  if (comm_pack.pack_cond == PACKCOR) //&& comm_pack.pitch_data == 5678 && comm_pack.fire_cmd == 0){
 				 HAL_GPIO_WritePin(GPIOG, LD_C_Pin, RESET);
@@ -67,7 +64,6 @@ void Gimbal_Task_Function(void const * argument)
 	  Motor_set_raw_value(&motor_data[0], comm_pack.yaw_data);
 	  osDelay(1);
   }
-	free(yaw);
 	free(pdata);
 
   /* USER CODE END Gimbal_Task_Function */
@@ -76,34 +72,51 @@ void Gimbal_Task_Function(void const * argument)
 /*
  * @ Func name: parse_pack_indv
  * @ Use: parse the packages sent from computer and output the motor data based on data pos
- * @ Parameter:  pack: the package received from UART
- * 			     parse_data: corresponding data variable, could be yaw, pitch, etc
- * 			     pos: The position of the last byte of the currently extracted data
+ * @ Parameter:  pack: the package received from UART.
+ * 			     pos: The position of the last byte of the currently extracted data, e.g. yaw.
+ * 			     lens: the length of current data, e.g. yaw.
  * @ Return:
  * @ Author: Haoran Qi, Created on: Jan, 2022
  */
-int32_t parse_pack_indv(char* pack, char* parse_data, int pos){
+int32_t parse_pack_indv(char* pack, int pos, int lens){
 
     char pdata[(strlen(pack)+1)]; //pack content size + '\0'
     int32_t data = 0;
     strcpy(pdata, pack);
 
     if (pdata[0] == 0x41){ //check received correct pack head frame， modify here to 0xAA in real world test
-    	HAL_GPIO_WritePin(GPIOG, LD_A_Pin, GPIO_PIN_RESET); // if correct, turn 1st led on
-    	// FIXME: if the data is no longer 4 bytes, e.g. fire cmd only have 1 bytes, there should be an additional Conditional Statements.
-		for(int i=0;i<4;i++){
-			parse_data[i] = pdata[pos-i-1] - '0'; // decoding, referring to the vision code.
-            data += (int32_t)((parse_data[i])*pow(10,i));
+		for(int i=0; i<lens; i++){
+            data += (int32_t)((pdata[pos-i-1] - '0')*pow(10,i)); // decoding, referring to the vision code.
 		}
     }
 	else{
-		parse_data[0] = NULL;
-		osDelay(1);
+		data = -1;
 	}
-
-    //data++; // plus 1 to ensure the correct output
+    osDelay(1);
     return data;
 }
+//int32_t parse_pack_indv(char* pack, char* parse_data, int pos){
+//
+//    char pdata[(strlen(pack)+1)]; //pack content size + '\0'
+//    int32_t data = 0;
+//    strcpy(pdata, pack);
+//
+//    if (pdata[0] == 0x41){ //check received correct pack head frame， modify here to 0xAA in real world test
+//    	HAL_GPIO_WritePin(GPIOG, LD_A_Pin, GPIO_PIN_RESET); // if correct, turn 1st led on
+//    	// FIXME: if the data is no longer 4 bytes, e.g. fire cmd only have 1 bytes, there should be an additional Conditional Statements.
+//		for(int i=0;i<4;i++){
+//			parse_data[i] = pdata[pos-i-1] - '0'; // decoding, referring to the vision code.
+//            data += (int32_t)((parse_data[i])*pow(10,i));
+//		}
+//    }
+//	else{
+//		parse_data[0] = NULL;
+//		osDelay(1);
+//	}
+//
+//    //data++; // plus 1 to ensure the correct output
+//    return data;
+//}
 
 /*
  * @ Func name: parse_pack_string

@@ -20,6 +20,12 @@
 #define PACKCOR 0
 #define PACKERR 1
 
+#define YAW_POS 6
+#define PITCH_POS YAW_POS+DATALEN
+#define DIST_POS PITCH_POS+DATALEN
+#define TARGET_POS DIST_POS+STATELEN
+#define FCMD_POS TARGET_POS+STATELEN
+
 typedef struct {
 	int32_t yaw_data;
 	int32_t pitch_data;
@@ -29,7 +35,7 @@ typedef struct {
 	int32_t pack_cond;
 }comm_rx_info;
 
-int32_t parse_pack_indv(char* pack, char* parse_data, int pos);
+int32_t parse_pack_indv(char* pack, int pos, int lens);
 comm_rx_info parse_pack_string(char* pack);
 comm_rx_info comm_pack;
 
