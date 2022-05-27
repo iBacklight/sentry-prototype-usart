@@ -8,11 +8,9 @@
 #include "Timer_App.h"
 
 
-
 void Timer_Task_Func(void const * argument){
 
 	uint32_t tick;
-
 
 	for (;;){
 
