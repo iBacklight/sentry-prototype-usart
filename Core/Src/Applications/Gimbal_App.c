@@ -47,6 +47,7 @@ void Gimbal_Task_Function(void const * argument)
 
   for(;;)
   {
+	 /*
 	  //Motor_pid_set_angle(&motor_data[4],360,vmax/max_angle,0,0);
 	 // packet total size, referring to comm protocol
 
@@ -65,7 +66,19 @@ void Gimbal_Task_Function(void const * argument)
 	  }
 
 	  //HAL_GPIO_WritePin(GPIOG, LD_B_Pin, GPIO_PIN_RESET);
-	  Motor_set_raw_value(&motor_data[0], comm_pack.yaw_data);
+	  Motor_set_raw_value(&motor_data[0], comm_pack.yaw_data);*/
+	  if (HAL_UART_Receive(&husart6, (char*)pdata, (PACKLEN+1), HAL_MAX_DELAY) == HAL_OK){
+		  HAL_GPIO_TogglePin(GPIOG, LD_H_Pin);
+		  comm_pack=parse_all(pdata);
+		  HAL_UART_Transmit(&husart6, (char*)pdata, (PACKLEN+1),HAL_MAX_DELAY);
+	  }
+	  if (comm_pack.pack_cond==PACKCOR){
+		  buzzer_play_c1(500);
+	  }
+	  else if (comm_pack.pack_cond==PACKERR){
+		  buzzer_play_mario(120);
+	  }
+
 	  osDelay(1);
   }
 	free(pdata);
@@ -272,7 +285,6 @@ comm_rx_info parse_all(char* pack)
             HAL_GPIO_WritePin(GPIOG, LD_F_Pin, RESET);
         }
     }
-    
     else
     {
         Sentry_Pack.pack_cond = PACKERR;

@@ -14,7 +14,7 @@
 #include "../buzzer.h"
 #include "../Device/Motor.h"
 
-#define PACKLEN  6
+#define PACKLEN  16
 #define DATALEN  4
 #define STATELEN 1
 #define PACKCOR 0
@@ -37,6 +37,7 @@ typedef struct {
 
 int32_t parse_pack_indv(char* pack, int pos, int lens);
 comm_rx_info parse_pack_string(char* pack);
+comm_rx_info parse_all(char* pack);
 comm_rx_info comm_pack;
 
 void Gimbal_Task_Function(void const * argument);
