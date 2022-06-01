@@ -55,8 +55,10 @@ void Gimbal_Task_Function(void const * argument)
 		  comm_pack.yaw_data = parse_pack_indv(pdata, YAW_POS, DATALEN);
 		  // comm_pack.yaw_data = parse_pack_indv(pdata, TARGET_POS, STATELEN);
 		  //comm_pack = parse_pack_string(pdata);
-		  if (comm_pack.pack_cond == PACKCOR) //&& comm_pack.pitch_data == 5678 && comm_pack.fire_cmd == 0){
+		  if (comm_pack.pack_cond == PACKCOR){ //&& comm_pack.pitch_data == 5678 && comm_pack.fire_cmd == 0){
 				 HAL_GPIO_WritePin(GPIOG, LD_C_Pin, RESET);
+		  }
+		  HAL_UART_Transmit(&husart6, (char*)pdata, (PACKLEN+1),HAL_MAX_DELAY);
 	 }
 	 if (comm_pack.yaw_data == 1234){ //&& comm_pack.pitch_data == 5678 && comm_pack.fire_cmd == 0){
 		 HAL_GPIO_WritePin(GPIOG, LD_B_Pin, RESET);

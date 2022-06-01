@@ -14,7 +14,7 @@
 #include "../buzzer.h"
 #include "../Device/Motor.h"
 
-#define PACKLEN  16
+#define PACKLEN  6
 #define DATALEN  4
 #define STATELEN 1
 #define PACKCOR 0
