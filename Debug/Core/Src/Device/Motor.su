@@ -4,4 +4,4 @@ Motor.c:72:6:get_Motor_buffer	16	static
 Motor.c:78:6:set_Motor_buffer	16	static
 Motor.c:86:6:Motor_Data_Replacement	16	static
 Motor.c:103:6:Motor_pid_set_angle	104	static
-Motor.c:181:6:Motor_set_raw_value	56	static
+Motor.c:185:6:Motor_set_raw_value	56	static

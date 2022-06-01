@@ -9,6 +9,7 @@
 #include "Gimbal_App.h"
 #include "Timer_App.h"
 
+
 static uint8_t chassis_can_send_data[8];
 static CAN_TxHeaderTypeDef  chassis_tx_message;
 
@@ -67,23 +68,47 @@ void Gimbal_Task_Function(void const * argument)
 
 	  //HAL_GPIO_WritePin(GPIOG, LD_B_Pin, GPIO_PIN_RESET);
 	  Motor_set_raw_value(&motor_data[0], comm_pack.yaw_data);*/
-	  if (HAL_UART_Receive(&husart6, (char*)pdata, (PACKLEN+1), HAL_MAX_DELAY) == HAL_OK){
+	  /*if (HAL_UART_Receive(&husart6, (char*)pdata, (PACKLEN+1), 1) == HAL_OK){
 		  HAL_GPIO_TogglePin(GPIOG, LD_H_Pin);
 		  comm_pack=parse_all(pdata);
-		  HAL_UART_Transmit(&husart6, (char*)pdata, (PACKLEN+1),HAL_MAX_DELAY);
+		  HAL_UART_Transmit(&husart6, (char*)pdata, (PACKLEN+1),1);
 	  }
 	  if (comm_pack.pack_cond==PACKCOR){
-		  buzzer_play_c1(500);
+//		  buzzer_play_c1(500);
 	  }
 	  else if (comm_pack.pack_cond==PACKERR){
-		  buzzer_play_mario(120);
+//		  buzzer_play_mario(120);
 	  }
-
+	  double temp = angle_preprocess(4, comm_pack.yaw_data);
+	  Motor_pid_set_angle(&motor_data[4], angle_preprocess(4, comm_pack.yaw_data), 1,0,0);
+	  char arr[sizeof(temp)+1];
+	  memcpy(arr,&temp,sizeof(temp)+1);
+	  arr[sizeof(temp)] = 0x0A;
+	  HAL_UART_Transmit(&husart6, (char*)arr, sizeof(temp)+1,1);*/
+	  Motor_pid_set_angle(&motor_data[4], 0, vmax/max_angle,0,0);
+	  //Motor_set_raw_value(&motor_data[4],-3000);
 	  osDelay(1);
   }
 	free(pdata);
 
   /* USER CODE END Gimbal_Task_Function */
+}
+
+
+double angle_preprocess(int16_t motor_ID, int16_t recieved_angle){
+	Motor temp_motor_buffer;
+	int16_t rx_angle;
+	int16_t input_angle;
+	int16_t target_angle;
+	input_angle=round(recieved_angle/360*8192);
+
+	get_Motor_buffer(&motor_data[motor_ID], &temp_motor_buffer);
+	rx_angle=temp_motor_buffer.motor_feedback.rx_angle;
+
+	target_angle=input_angle + rx_angle;
+	target_angle=(8192+target_angle) % 8192;
+
+	return (double)(target_angle/8192*360);
 }
 
 

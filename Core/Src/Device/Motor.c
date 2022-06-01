@@ -127,7 +127,7 @@ void Motor_pid_set_angle(Motor* motor, double angle, int32_t p, int32_t i, int32
 		target_angle=target_angle%8192;
 	}*/
 
-	current_error=abs(target_angle-rx_angle);
+	current_error=(target_angle-rx_angle+8192)%8192; //Use target - rx + 8192 to always make it positive, mod 8192 to make sure its within [0,8192]
 
 	//Few decisions to make with statements below
 	//If error is small enough, then velocity=0 (motor doesn't turn)
@@ -140,7 +140,9 @@ void Motor_pid_set_angle(Motor* motor, double angle, int32_t p, int32_t i, int32
 		velocity=0;
 	}
 	else{
-		if (current_error<=4096){
+		if (current_error<=4096){ //If need to turn less than 180 degrees, go CW
+			//HAL_GPIO_WritePin(GPIOG, LD_A_Pin, RESET);
+			//HAL_GPIO_WritePin(GPIOG, LD_B_Pin, SET);
 			direction=1;
 
 			speed=p*current_error;
@@ -151,8 +153,10 @@ void Motor_pid_set_angle(Motor* motor, double angle, int32_t p, int32_t i, int32
 
 			velocity=direction*speed;
 		}
-		else{
-			current_error=abs(current_error-8192);
+		else{ //Otherwise, go CCW
+			//HAL_GPIO_WritePin(GPIOG, LD_B_Pin, RESET);
+			//HAL_GPIO_WritePin(GPIOG, LD_A_Pin, SET);
+			current_error=(8192-current_error); //Error from "the other side" obtained by 8192-error if CCW
 			direction=-1;
 
 			speed=p*current_error;
