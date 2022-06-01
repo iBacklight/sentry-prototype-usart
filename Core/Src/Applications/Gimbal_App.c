@@ -215,6 +215,74 @@ comm_rx_info parse_pack_string(char* pack)
     return Sentry_Pack;
 }
 
+comm_rx_info parse_all(char* pack)
+{
+    comm_rx_info Sentry_Pack;
+    Sentry_Pack.yaw_data = 0;
+    Sentry_Pack.pitch_data = 0;
+    Sentry_Pack.dist_data = 0;
+    Sentry_Pack.fire_cmd = 0;
+    Sentry_Pack.target_num = 0;
+    Sentry_Pack.pack_cond=0;
+
+    //int position = 6;
+    //unsigned char data;
+    //int power;
+
+    if (strlen(pack) == PACKLEN)
+    {
+        if (pack[0] == 0x41) //start with 'A'
+        {
+            for (int i = 2; i< PACKLEN-1; i++)
+            {
+                if(pack[i]>='0' && pack[i] <= '9') // make sure each number is 0~9
+                {
+                    Sentry_Pack.pack_cond = PACKCOR;
+                }
+                else
+                {
+                    Sentry_Pack.pack_cond = PACKERR;
+                    HAL_GPIO_WritePin(GPIOG, LD_D_Pin, RESET);
+                    break;
+                }
+            }
+                if(pack[PACKLEN-1]=='0' || pack[PACKLEN-1] == '1') {// fire command is '0' or '1'
+                    Sentry_Pack.pack_cond = PACKCOR;
+                }
+                else
+                {
+                    Sentry_Pack.pack_cond = PACKERR;
+                    HAL_GPIO_WritePin(GPIOG, LD_E_Pin, RESET);
+                }
+                //only when the format is correct, parse the packet
+            if(Sentry_Pack.pack_cond == PACKCOR)
+            {
+                Sentry_Pack.yaw_data=parse_pack_indv(pack,YAW_POS, DATALEN);
+                Sentry_Pack.pitch_data=parse_pack_indv(pack,PITCH_POS,DATALEN);
+                Sentry_Pack.dist_data=parse_pack_indv(pack,DIST_POS,DATALEN);
+                Sentry_Pack.target_num=parse_pack_indv(pack,TARGET_POS,STATELEN);
+                Sentry_Pack.fire_cmd=parse_pack_indv(pack,FCMD_POS,STATELEN);
+            }
+        }
+        else
+        {
+            Sentry_Pack.pack_cond = PACKERR;
+            HAL_GPIO_WritePin(GPIOG, LD_F_Pin, RESET);
+        }
+    }
+    
+    else
+    {
+        Sentry_Pack.pack_cond = PACKERR;
+        HAL_GPIO_WritePin(GPIOG, LD_G_Pin, RESET);
+    }
+    return Sentry_Pack;
+    
+}
+    
+
+
+
 
 void CAN_Send_Gimbal(int16_t yaw_raw, int16_t pitch_raw)
 {
