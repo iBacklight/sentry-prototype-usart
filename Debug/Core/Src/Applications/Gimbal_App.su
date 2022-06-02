@@ -1,6 +1,6 @@
-Gimbal_App.c:25:6:Gimbal_Task_Function	48	static
-Gimbal_App.c:98:8:angle_preprocess	64	static
-Gimbal_App.c:124:9:parse_pack_indv	56	dynamic
-Gimbal_App.c:173:14:parse_pack_string	80	static
-Gimbal_App.c:258:14:parse_all	56	static
-Gimbal_App.c:326:6:CAN_Send_Gimbal	24	static
+Gimbal_App.c:25:6:Gimbal_Task_Function	80	static
+Gimbal_App.c:107:8:angle_preprocess	64	static
+Gimbal_App.c:133:9:parse_pack_indv	56	dynamic
+Gimbal_App.c:182:14:parse_pack_string	80	static
+Gimbal_App.c:267:14:parse_all	56	static
+Gimbal_App.c:336:6:CAN_Send_Gimbal	24	static

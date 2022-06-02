@@ -39,7 +39,7 @@ int32_t parse_pack_indv(char* pack, int pos, int lens);
 comm_rx_info parse_pack_string(char* pack);
 comm_rx_info parse_all(char* pack);
 
-double angle_preprocess(int16_t motor_ID, int16_t recieved_angle);
+double angle_preprocess(Motor* motor, int16_t recieved_angle);
 comm_rx_info comm_pack;
 
 void Gimbal_Task_Function(void const * argument);
