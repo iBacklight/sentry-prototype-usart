@@ -19,6 +19,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
+#include "Applications/gimbal_app.h"
 
 /* USER CODE BEGIN 0 */
 #ifdef __GNUC__
@@ -71,7 +72,6 @@ void MX_UART7_Init(void)
 /* USART6 init function */
 void MX_USART6_Init(void)
 {
-
   husart6.Instance = USART6;
   husart6.Init.BaudRate = 115200;
   husart6.Init.WordLength = UART_WORDLENGTH_8B;
@@ -84,9 +84,10 @@ void MX_USART6_Init(void)
   {
     Error_Handler();
   }
-
+  else{
+	HAL_UART_Receive_IT(&husart6, pdata, (PACKLEN+1));
+  }
 }
-
 
 void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
 {
@@ -134,7 +135,9 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
 	HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
   /* USER CODE BEGIN UART7_MspInit 1 */
-
+	//USART6 Interrput Init
+	HAL_NVIC_SetPriority(USART6_IRQn,5,1);
+	HAL_NVIC_EnableIRQ(USART6_IRQn);
   /* USER CODE END UART7_MspInit 1 */
   }
 }

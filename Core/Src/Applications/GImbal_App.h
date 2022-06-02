@@ -35,15 +35,19 @@ typedef struct {
 	int32_t pack_cond;
 }comm_rx_info;
 
+
 int32_t parse_pack_indv(char* pack, int pos, int lens);
 comm_rx_info parse_pack_string(char* pack);
 comm_rx_info parse_all(char* pack);
 
 double angle_preprocess(Motor* motor, int16_t recieved_angle);
+void SweepAndPatrol(void);
 comm_rx_info comm_pack;
+char *pdata; // data packet from computer
 
 void Gimbal_Task_Function(void const * argument);
 void CAN_Send_Gimbal(int16_t yaw_raw, int16_t pitch_raw);
 int32_t parse_pack(char* pack, char* yaw_data);
+// void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 
 #endif /* SRC_APPLICATIONS_GIMBAL_APP_H_ */
