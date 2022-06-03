@@ -1,8 +1,8 @@
-Gimbal_App.c:25:6:Gimbal_Task_Function	48	static
-Gimbal_App.c:100:8:angle_preprocess	64	static
-Gimbal_App.c:116:6:SweepAndPatrol	48	static
-Gimbal_App.c:149:9:parse_pack_indv	56	dynamic
-Gimbal_App.c:176:14:parse_pack_string	80	static
-Gimbal_App.c:270:14:parse_all	56	static
-Gimbal_App.c:335:6:CAN_Send_Gimbal	24	static
-Gimbal_App.c:369:6:HAL_UART_RxCpltCallback	48	static
+Gimbal_App.c:25:6:Gimbal_Task_Function	40	static
+Gimbal_App.c:104:8:angle_preprocess	64	static
+Gimbal_App.c:120:6:SweepAndPatrol	48	static
+Gimbal_App.c:153:9:parse_pack_indv	56	dynamic
+Gimbal_App.c:180:14:parse_pack_string	80	static
+Gimbal_App.c:274:14:parse_all	56	static
+Gimbal_App.c:339:6:CAN_Send_Gimbal	24	static
+Gimbal_App.c:373:6:HAL_UART_RxCpltCallback	48	static

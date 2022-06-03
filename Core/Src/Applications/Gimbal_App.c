@@ -43,6 +43,9 @@ void Gimbal_Task_Function(void const * argument)
 	//int16_t message=7500;
 
 	HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
+
+	HAL_UART_Receive_IT(&husart6, pdata, (PACKLEN+1));
+	printf("Gimbal App is on! \r\n");
 	velocity=3000;
 	//can_filter_enable(&hcan1);
 
@@ -65,32 +68,33 @@ void Gimbal_Task_Function(void const * argument)
 	  	   *
 	  	   * 		SweepAndPatrol may be put in for loop here, as the target num varible will be the quit signal of sweep mode.
 	  	   */
-	  	  if(comm_pack.target_num == 0)
-	  		  // Activate Sweep&Patrol mode
-	  		  SweepAndPatrol();
-	  	  else{
-	//		  char* temp_pdata, temp;
-	//	  	  strcpy(temp_pdata, pdata);
-	//		  comm_pack=parse_all(temp_pdata);
-	//		  HAL_UART_Transmit(&husart6, (char*)pdata, (PACKLEN+1),50);
-	//		  HAL_UART_Transmit(&husart6, (char*)temp, 17,50);
-
-			  if (comm_pack.pack_cond==PACKCOR){
-				  buzzer_play_c1(500);
-				  printf("InsideTask -> Yaw: %d;\t Pitch: %d; \t%s\r\n", (int16_t)angle_preprocess(&motor_data[4], comm_pack.yaw_data), (int16_t)angle_preprocess(&motor_data[5], comm_pack.pitch_data), pdata);
-				  // Guess the following function should be called only if the pack is correct?
-//				  Motor_pid_set_angle(&motor_data[4], angle_preprocess(&motor_data[4], comm_pack.yaw_data), vmax/max_angle,0,0);
-//				  Motor_pid_set_angle(&motor_data[5], angle_preprocess(&motor_data[5], comm_pack.pitch_data), vmax/max_angle,0,0);
-			  }
-			  else if (comm_pack.pack_cond==PACKERR){
-				  //buzzer_play_mario(120);
-			  }
-			  Motor_pid_set_angle(&motor_data[4], angle_preprocess(&motor_data[4], comm_pack.yaw_data), vmax/max_angle,0,0);
-			  Motor_pid_set_angle(&motor_data[5], angle_preprocess(&motor_data[5], comm_pack.pitch_data), vmax/max_angle,0,0);
-			  //Motor_pid_set_angle	(&motor_data[4], 0, vmax/max_angle,0,0);
-			  //Motor_set_raw_value(&motor_data[4],-3000);
-			  osDelay(1);
-	  	  }
+//	  	  if(comm_pack.target_num == 0)
+//	  		  // Activate Sweep&Patrol mode
+//	  		  SweepAndPatrol();
+//	  	  else{
+//	//		  char* temp_pdata, temp;
+//	//	  	  strcpy(temp_pdata, pdata);
+//	//		  comm_pack=parse_all(temp_pdata);
+//	//		  HAL_UART_Transmit(&husart6, (char*)pdata, (PACKLEN+1),50);
+//	//		  HAL_UART_Transmit(&husart6, (char*)temp, 17,50);
+//
+//			  if (comm_pack.pack_cond==PACKCOR){
+//				  buzzer_play_c1(500);
+//				  printf("InsideTask -> Yaw: %d;\t Pitch: %d; \t%s\r\n", (int16_t)angle_preprocess(&motor_data[4], comm_pack.yaw_data), (int16_t)angle_preprocess(&motor_data[5], comm_pack.pitch_data), pdata);
+//				  // Guess the following function should be called only if the pack is correct?
+////				  Motor_pid_set_angle(&motor_data[4], angle_preprocess(&motor_data[4], comm_pack.yaw_data), vmax/max_angle,0,0);
+////				  Motor_pid_set_angle(&motor_data[5], angle_preprocess(&motor_data[5], comm_pack.pitch_data), vmax/max_angle,0,0);
+//			  }
+//			  else if (comm_pack.pack_cond==PACKERR){
+//				  //buzzer_play_mario(120);
+//			  }
+//
+//			  //Motor_pid_set_angle	(&motor_data[4], 0, vmax/max_angle,0,0);
+//			  //Motor_set_raw_value(&motor_data[4],-3000);
+//			  osDelay(1);
+//	  	  }
+		  //Motor_pid_set_angle(&motor_data[4], angle_preprocess(&motor_data[4], comm_pack.yaw_data), vmax/max_angle,0,0);
+		  //Motor_pid_set_angle(&motor_data[5], angle_preprocess(&motor_data[5], comm_pack.pitch_data), vmax/max_angle,0,0);
   }
 
   /* USER CODE END Gimbal_Task_Function */
@@ -371,6 +375,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 	 // Thus parse it directly.
 	  HAL_GPIO_TogglePin(GPIOG, LD_H_Pin);
 	  comm_pack=parse_all(pdata);
+	  printf("%s \r\n", pdata);
 	  if(comm_pack.pack_cond == PACKCOR)
 		  printf("Yaw: %d;\t Pitch: %d; \t%s\r\n", (int16_t)angle_preprocess(&motor_data[4], comm_pack.yaw_data), (int16_t)angle_preprocess(&motor_data[5], comm_pack.pitch_data), pdata);
 	  // Enable the uart interrupt again
