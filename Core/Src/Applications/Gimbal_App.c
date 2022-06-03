@@ -26,10 +26,8 @@ void Gimbal_Task_Function(void const * argument)
 {
 
   /* USER CODE BEGIN Gimbal_Task_Function */
-  char *pdata; // data packet from computer
   double vmax=30000;
   double max_angle=4096;
-  pdata = malloc(PACKLEN+1);
 
   //Init comm pack
   comm_pack.yaw_data = 0;
@@ -56,49 +54,44 @@ void Gimbal_Task_Function(void const * argument)
 
   for(;;)
   {
-	 /*
-	  //Motor_pid_set_angle(&motor_data[4],360,vmax/max_angle,0,0);
-	 // packet total size, referring to comm protocol
+//	  	  comm_pack.pack_cond=PACKERR;
+	  	  /*
+	  	   * @Note: Parse process(as well as re-transmit and buzzer process) may be placed in interrupt callback (HAL_UART_RxCpltCallback) too
+	  	   * 		based on the accuracy of debugging.
+	  	   *
+	  	   * 		Besides, we may also need to put the func Motor_pid_set_angle in the interrupt (at least before next enable of uart interrupt)
+	  	   * 		since we do not know the freq of pack coming, doing this ensures every pack can be set to motor,
+	  	   * 		rather than directly entering next uart interrupt.
+	  	   *
+	  	   * 		SweepAndPatrol may be put in for loop here, as the target num varible will be the quit signal of sweep mode.
+	  	   */
+	  	  if(comm_pack.target_num == 0)
+	  		  // Activate Sweep&Patrol mode
+	  		  SweepAndPatrol();
+	  	  else{
+	//		  char* temp_pdata, temp;
+	//	  	  strcpy(temp_pdata, pdata);
+	//		  comm_pack=parse_all(temp_pdata);
+	//		  HAL_UART_Transmit(&husart6, (char*)pdata, (PACKLEN+1),50);
+	//		  HAL_UART_Transmit(&husart6, (char*)temp, 17,50);
 
-	  if (HAL_UART_Receive(&husart6, (char*)pdata, (PACKLEN+1), HAL_MAX_DELAY) == HAL_OK){ // origin:huart7
-		  HAL_GPIO_TogglePin(GPIOG, LD_H_Pin);
-		  comm_pack.yaw_data = parse_pack_indv(pdata, YAW_POS, DATALEN);
-		  // comm_pack.yaw_data = parse_pack_indv(pdata, TARGET_POS, STATELEN);
-		  //comm_pack = parse_pack_string(pdata);
-		  if (comm_pack.pack_cond == PACKCOR){ //&& comm_pack.pitch_data == 5678 && comm_pack.fire_cmd == 0){
-				 HAL_GPIO_WritePin(GPIOG, LD_C_Pin, RESET);
-		  }
-		  HAL_UART_Transmit(&husart6, (char*)pdata, (PACKLEN+1),HAL_MAX_DELAY);
-	 }
-	 if (comm_pack.yaw_data == 1234){ //&& comm_pack.pitch_data == 5678 && comm_pack.fire_cmd == 0){
-		 HAL_GPIO_WritePin(GPIOG, LD_B_Pin, RESET);
-	  }
-
-	  //HAL_GPIO_WritePin(GPIOG, LD_B_Pin, GPIO_PIN_RESET);
-	  Motor_set_raw_value(&motor_data[0], comm_pack.yaw_data);*/
-	  comm_pack.pack_cond=PACKERR;
-	  if (HAL_UART_Receive(&husart6, (char*)pdata, (PACKLEN+1), 3) == HAL_OK){
-		  HAL_GPIO_TogglePin(GPIOG, LD_H_Pin);
-		  comm_pack=parse_all(pdata);
-//		  HAL_UART_Transmit(&husart6, (char*)pdata, (PACKLEN+1),50);
-		  char* temp;
-		  printf("Yaw: %d;\t Pitch: %d; \t%s\r\n", (int16_t)angle_preprocess(&motor_data[4], comm_pack.yaw_data), (int16_t)angle_preprocess(&motor_data[5], comm_pack.pitch_data), pdata);
-		  //HAL_UART_Transmit(&husart6, (char*)temp, 17,50);
-	  }
-	  if (comm_pack.pack_cond==PACKCOR){
-		  buzzer_play_c1(500);
-	  }
-	  else if (comm_pack.pack_cond==PACKERR){
-		  //buzzer_play_mario(120);
-	  }
-
-	  Motor_pid_set_angle(&motor_data[4], angle_preprocess(&motor_data[4], comm_pack.yaw_data), vmax/max_angle,0,0);
-	  Motor_pid_set_angle(&motor_data[5], angle_preprocess(&motor_data[5], comm_pack.pitch_data), vmax/max_angle,0,0);
-	  //Motor_pid_set_angle	(&motor_data[4], 0, vmax/max_angle,0,0);
-	  //Motor_set_raw_value(&motor_data[4],-3000);
-	  osDelay(1);
+			  if (comm_pack.pack_cond==PACKCOR){
+				  buzzer_play_c1(500);
+				  printf("InsideTask -> Yaw: %d;\t Pitch: %d; \t%s\r\n", (int16_t)angle_preprocess(&motor_data[4], comm_pack.yaw_data), (int16_t)angle_preprocess(&motor_data[5], comm_pack.pitch_data), pdata);
+				  // Guess the following function should be called only if the pack is correct?
+//				  Motor_pid_set_angle(&motor_data[4], angle_preprocess(&motor_data[4], comm_pack.yaw_data), vmax/max_angle,0,0);
+//				  Motor_pid_set_angle(&motor_data[5], angle_preprocess(&motor_data[5], comm_pack.pitch_data), vmax/max_angle,0,0);
+			  }
+			  else if (comm_pack.pack_cond==PACKERR){
+				  //buzzer_play_mario(120);
+			  }
+			  Motor_pid_set_angle(&motor_data[4], angle_preprocess(&motor_data[4], comm_pack.yaw_data), vmax/max_angle,0,0);
+			  Motor_pid_set_angle(&motor_data[5], angle_preprocess(&motor_data[5], comm_pack.pitch_data), vmax/max_angle,0,0);
+			  //Motor_pid_set_angle	(&motor_data[4], 0, vmax/max_angle,0,0);
+			  //Motor_set_raw_value(&motor_data[4],-3000);
+			  osDelay(1);
+	  	  }
   }
-	free(pdata);
 
   /* USER CODE END Gimbal_Task_Function */
 }
@@ -120,6 +113,29 @@ double angle_preprocess(Motor* motor, int16_t recieved_angle){
 	return (double)(target_angle*360/8192);
 }
 
+void SweepAndPatrol(void){
+
+	Motor temp_motor_buffer;
+	int16_t rx_angle, i;
+
+	// Enter while loop to sweep the gimbal
+	while(1){
+		// Obtain the current angle
+		get_Motor_buffer(&motor_data[4], &temp_motor_buffer);
+		rx_angle=temp_motor_buffer.motor_feedback.rx_angle;
+		for(i= rx_angle*8192/360;i<8192;i++){
+			if(comm_pack.target_num > 0)
+				return;
+			Motor_set_raw_value(&motor_data[4],i);
+		}
+		for(i= 8192; i>0; i--){
+			if(comm_pack.target_num > 0)
+				return;
+			Motor_set_raw_value(&motor_data[4],i);
+		}
+
+	}
+}
 
 /*
  * @ Func name: parse_pack_indv
@@ -147,28 +163,6 @@ int32_t parse_pack_indv(char* pack, int pos, int lens){
     osDelay(1);
     return data;
 }
-//int32_t parse_pack_indv(char* pack, char* parse_data, int pos){
-//
-//    char pdata[(strlen(pack)+1)]; //pack content size + '\0'
-//    int32_t data = 0;
-//    strcpy(pdata, pack);
-//
-//    if (pdata[0] == 0x41){ //check received correct pack head frame， modify here to 0xAA in real world test
-//    	HAL_GPIO_WritePin(GPIOG, LD_A_Pin, GPIO_PIN_RESET); // if correct, turn 1st led on
-//    	// FIXME: if the data is no longer 4 bytes, e.g. fire cmd only have 1 bytes, there should be an additional Conditional Statements.
-//		for(int i=0;i<4;i++){
-//			parse_data[i] = pdata[pos-i-1] - '0'; // decoding, referring to the vision code.
-//            data += (int32_t)((parse_data[i])*pow(10,i));
-//		}
-//    }
-//	else{
-//		parse_data[0] = NULL;
-//		osDelay(1);
-//	}
-//
-//    //data++; // plus 1 to ensure the correct output
-//    return data;
-//}
 
 /*
  * @ Func name: parse_pack_string
@@ -264,6 +258,15 @@ comm_rx_info parse_pack_string(char* pack)
     return Sentry_Pack;
 }
 
+/*
+ * @ Func name: parse_all
+ * @ Use: parse the packages sent from computer using defined parse indv function
+ * @ Parameter:
+ *   pack: the package received from UART
+ *
+ * @ Return: Parsed pack
+ * @ Author: Wenyuan, Wei Created on: May, 2022
+ */
 comm_rx_info parse_all(char* pack)
 {
 	comm_rx_info Sentry_Pack;
@@ -329,10 +332,6 @@ comm_rx_info parse_all(char* pack)
 
 }
     
-
-
-
-
 void CAN_Send_Gimbal(int16_t yaw_raw, int16_t pitch_raw)
 {
     uint32_t send_mail_box;
@@ -364,4 +363,16 @@ void CAN_Send_Gimbal(int16_t yaw_raw, int16_t pitch_raw)
 //    	buzzer_play_d1(100);
 //    	buzzer_play_e1(100);
 //    }
+}
+
+// UART interrupt callback function
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+	 // When enter this callback function, the variable pdata has been filled with the received data.
+	 // Thus parse it directly.
+	  HAL_GPIO_TogglePin(GPIOG, LD_H_Pin);
+	  comm_pack=parse_all(pdata);
+	  if(comm_pack.pack_cond == PACKCOR)
+		  printf("Yaw: %d;\t Pitch: %d; \t%s\r\n", (int16_t)angle_preprocess(&motor_data[4], comm_pack.yaw_data), (int16_t)angle_preprocess(&motor_data[5], comm_pack.pitch_data), pdata);
+	  // Enable the uart interrupt again
+	  HAL_UART_Receive_IT(&husart6, (char*)pdata, (PACKLEN+1));
 }
