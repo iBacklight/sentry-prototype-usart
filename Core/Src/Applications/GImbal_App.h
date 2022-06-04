@@ -41,9 +41,11 @@ comm_rx_info parse_pack_string(char* pack);
 comm_rx_info parse_all(char* pack);
 
 double angle_preprocess(Motor* motor, int16_t recieved_angle);
+double abs_pitch;
+double abs_yaw;
 void SweepAndPatrol(void);
 comm_rx_info comm_pack;
-char *pdata; // data packet from computer
+char *pdata[PACKLEN]; // data packet from computer //Make sure to define a size, else the interrupt will not work!
 
 void Gimbal_Task_Function(void const * argument);
 void CAN_Send_Gimbal(int16_t yaw_raw, int16_t pitch_raw);
