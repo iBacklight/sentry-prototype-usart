@@ -29,6 +29,10 @@ void Gimbal_Task_Function(void const * argument)
   /* USER CODE BEGIN Gimbal_Task_Function */
   double vmax=30000;
   double max_angle=4096;
+  int16_t init_complete=-3000; //For the first init_complete*osDelay [ms], initialize gimbal state
+  uint16_t pitch_change_counter=0;
+
+  int16_t patrol_dir=1;
 
   //Init comm pack
   comm_pack.yaw_data = 0;
@@ -36,6 +40,7 @@ void Gimbal_Task_Function(void const * argument)
   comm_pack.dist_data = 0;
   comm_pack.fire_cmd = 0;
   comm_pack.target_num = 0;
+  Motor temp_motor_buffer;
 
 
   /* Infinite loop */
@@ -50,6 +55,7 @@ void Gimbal_Task_Function(void const * argument)
 	velocity=3000;
 	abs_pitch=0;
 	abs_yaw=0;
+
 	//can_filter_enable(&hcan1);
 
 	//Variables for a part that doesn't work yet
@@ -58,8 +64,19 @@ void Gimbal_Task_Function(void const * argument)
 
 	//End of variables that doesn't work
 
+  for (int i=0;i<3000;++i){
+			Motor_pid_set_angle(&motor_data[4], INIT_YAW, vmax/max_angle,0,0);
+			Motor_pid_set_angle(&motor_data[5], INIT_PITCH, vmax/max_angle,0,0);
+			osDelay(1);
+			//continue; //Keep initializing until its done
+  }
+
   for(;;)
   {
+	  //Initialize the gimbal states
+	  //Maybe put it outside of for loop
+
+
 	  //comm_pack=parse_all(pdata);
 	  //printf("Yaw: %d;\t Pitch: %d; \t%s\r\n", comm_pack.yaw_data, comm_pack.pitch_data, pdata);
 	  //osDelay(1000);
@@ -74,10 +91,47 @@ void Gimbal_Task_Function(void const * argument)
 	  	   *
 	  	   * 		SweepAndPatrol may be put in for loop here, as the target num varible will be the quit signal of sweep mode.
 	  	   */
-	  	  if(comm_pack.target_num == 0)
+	  	  if(comm_pack.target_num == 0){
+	  		  pitch_change_counter++;
+	  		  if (pitch_change_counter>MAX_PITCH_CHANGE_TIME*1000){
+	  			  patrol_dir=patrol_dir*-1;
+	  			  pitch_change_counter=0;
+	  		  }
+
+	  		  if (patrol_dir==-1){
+	  			  Motor_pid_set_angle(&motor_data[5],FRONT_ANGLE,vmax/max_angle,0,0);
+	  			  HAL_GPIO_WritePin(GPIOG, LD_C_Pin, RESET);
+	  			  HAL_GPIO_WritePin(GPIOG, LD_D_Pin, SET);
+	  		  }
+	  		  else{
+	  			  Motor_pid_set_angle(&motor_data[5],BACK_ANGLE,vmax/max_angle,0,0);
+	  			  HAL_GPIO_WritePin(GPIOG, LD_D_Pin, RESET);
+	  			  HAL_GPIO_WritePin(GPIOG, LD_C_Pin, SET);
+	  		  }
+
+//	  		HAL_GPIO_WritePin(GPIOG, LD_C_Pin, RESET);
+//
+//	  		  //Get Current angle
+//	  		  get_Motor_buffer(&motor_data[4], &temp_motor_buffer);
+//	  		  yaw_rx_angle=temp_motor_buffer.motor_feedback.rx_angle; //in 0-8192
+//
+//	  		  get_Motor_buffer(&motor_data[5], &temp_motor_buffer);
+//	  		  pitch_rx_angle=temp_motor_buffer.motor_feedback.rx_angle; //in 0-8192
+//
+//	  		  if (yaw_rx_angle>((INIT_YAW+YAW_MAX_HALF_DELTA+8192)%8192) && (yaw_rx_angle)<((INIT_YAW-YAW_MAX_HALF_DELTA+8192)%8192)){
+//	  			  patrol_dir=patrol_dir*-1;
+//	  		  }
+//
+//	  		  yaw_rx_angle+=patrol_dir*20;
+//
+//	  		 Motor_pid_set_angle(&motor_data[4], (double)yaw_rx_angle*360/8192, vmax/max_angle,0,0);
+
 	  		  // Activate Sweep&Patrol mode
-	  		  SweepAndPatrol();
+	  		  //SweepAndPatrol();
+
+	  	  }
 	  	  else{
+	  		 pitch_change_counter=0; //If there is a target, restart pitch counter
 	//		  char* temp_pdata, temp;
 	//	  	  strcpy(temp_pdata, pdata);
 	//		  comm_pack=parse_all(temp_pdata);
@@ -85,7 +139,7 @@ void Gimbal_Task_Function(void const * argument)
 	//		  HAL_UART_Transmit(&husart6, (char*)temp, 17,50);
 
 			  if (comm_pack.pack_cond==PACKCOR){
-				  buzzer_play_c1(500);
+				  //buzzer_play_c1(500);
 				  //printf("InsideTask -> Yaw: %d;\t Pitch: %d; \t%s\r\n", (int16_t)angle_preprocess(&motor_data[4], comm_pack.yaw_data), (int16_t)angle_preprocess(&motor_data[5], comm_pack.pitch_data), pdata);
 				  // Guess the following function should be called only if the pack is correct?
 				  Motor_pid_set_angle(&motor_data[4], abs_yaw, vmax/max_angle,0,0);
@@ -146,21 +200,31 @@ void SweepAndPatrol(void){
 
 	Motor temp_motor_buffer;
 	int16_t rx_angle, i;
+	double vmax_patrol=20000;
+	double max_angle_patrol=4096;
 
 	// Enter while loop to sweep the gimbal
 	while(1){
 		// Obtain the current angle
 		get_Motor_buffer(&motor_data[4], &temp_motor_buffer);
 		rx_angle=temp_motor_buffer.motor_feedback.rx_angle;
-		for(i= rx_angle*8192/360;i<8192;i++){
+
+		for(i= rx_angle;i<2048;i++){ //Go to 180
 			if(comm_pack.target_num > 0)
 				return;
-			Motor_set_raw_value(&motor_data[4],i);
+			Motor_pid_set_angle(&motor_data[4],i/8192*360,vmax_patrol/max_angle_patrol,0,0);
 		}
-		for(i= 8192; i>0; i--){
+
+		for(i= 2048; i>0; i--){ //Go back to 0
 			if(comm_pack.target_num > 0)
 				return;
-			Motor_set_raw_value(&motor_data[4],i);
+			Motor_pid_set_angle(&motor_data[4],i/8192*360,vmax_patrol/max_angle_patrol,0,0);
+		}
+
+		for(i= 8192; i>(8192-2048); i--){ //Go to -180
+			if(comm_pack.target_num > 0)
+				return;
+			Motor_pid_set_angle(&motor_data[4],i/8192*360,vmax_patrol/max_angle_patrol,0,0);
 		}
 
 	}
