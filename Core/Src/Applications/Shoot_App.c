@@ -22,8 +22,10 @@ void Shoot_Task_Func(void const * argument)
   double mag_load_speed_percent=10;
   for(;;)
   {
-
-	  cmd_execute_shoot(mag_load_speed_percent,fric_wheel_speed_percent);
+	  if(comm_pack.target_num ==1){
+		  buzzer_play_c1(100);
+		  cmd_execute_shoot(mag_load_speed_percent,fric_wheel_speed_percent);
+	  }
 
 	  //Shoot motor on half speed
 	//__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1,1700);

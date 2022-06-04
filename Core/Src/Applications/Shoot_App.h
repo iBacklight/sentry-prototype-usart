@@ -13,6 +13,7 @@
 #include "cmsis_os.h"
 #include "../buzzer.h"
 #include "../Device/Motor.h"
+#include "Gimbal_App.h"
 
 //Max and min PWM pulse width time, this differs for different motors, units in us
 //The big drone motors from hobbywing, which is used to power the large friction wheels has a max pulse widthof 2000us, and min of 1000us

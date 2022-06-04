@@ -9,6 +9,7 @@
 #include "Gimbal_App.h"
 #include "Timer_App.h"
 #include "stdio.h"
+#include "stdlib.h"
 
 
 static uint8_t chassis_can_send_data[8];
@@ -31,8 +32,12 @@ void Gimbal_Task_Function(void const * argument)
   double max_angle=4096;
   int16_t init_complete=-3000; //For the first init_complete*osDelay [ms], initialize gimbal state
   uint16_t pitch_change_counter=0;
+  uint16_t yaw_change_counter=0;
 
+  //Front and back directions
   int16_t patrol_dir=1;
+  int16_t sweep_dir=1;
+  int16_t pitch_state;
 
   //Init comm pack
   comm_pack.yaw_data = 0;
@@ -41,6 +46,27 @@ void Gimbal_Task_Function(void const * argument)
   comm_pack.fire_cmd = 0;
   comm_pack.target_num = 0;
   Motor temp_motor_buffer;
+
+  //Init angle calculations
+  const int16_t MAX_YAW=(INIT_YAW+YAW_MAX_HALF_DELTA+360) % 360; //Wrap all angles between 0 and 360
+  const int16_t MIN_YAW=(INIT_YAW-YAW_MAX_HALF_DELTA+360) % 360; //Wrap all angles between 0 and 360
+  //const int16_t YAW_OVER_ZERO=check_angle_over_zero(MIN_YAW, MAX_YAW);
+
+  const int16_t MAX_PITCH_FRONT=(FRONT_ANGLE+PITCH_MAX_HALF_DELTA+360) % 360; //Wrap all angles between 0 and 360
+  const int16_t MIN_PITCH_FRONT=(FRONT_ANGLE-PITCH_MAX_HALF_DELTA+360) % 360; //Wrap all angles between 0 and 360
+  //const int16_t PITCH_FRONT_OVER_ZERO=check_angle_over_zero(MIN_YAW, MAX_YAW);
+
+  const int16_t MAX_PITCH_BACK=(BACK_ANGLE+PITCH_MAX_HALF_DELTA+360) % 360; //Wrap all angles between 0 and 360
+  const int16_t MIN_PITCH_BACK=(BACK_ANGLE-PITCH_MAX_HALF_DELTA+360) % 360; //Wrap all angles between 0 and 360
+  //const int16_t PITCH_BACK_OVER_ZERO=check_angle_over_zero(MIN_PITCH_BACK, MAX_PITCH_BACK);
+
+  //printf("Max Yaw: %d, Min Yaw: %d, Max_Pitch_Front: %d, Min_Pitch_Front: %d, Max Pitch Back: %d, Min Pitch Back: %d \n\r",
+	//	  MAX_YAW, MIN_YAW,MAX_PITCH_FRONT,MIN_PITCH_FRONT, MAX_PITCH_BACK, MIN_PITCH_BACK);
+
+  int16_t runtime_yaw_max;
+  int16_t runtime_yaw_min;
+  int16_t runtime_pitch_max;
+  int16_t runtime_pitch_min;
 
 
   /* Infinite loop */
@@ -65,16 +91,26 @@ void Gimbal_Task_Function(void const * argument)
 	//End of variables that doesn't work
 
   for (int i=0;i<3000;++i){
+	        pitch_state=PITCH_FRONT;
 			Motor_pid_set_angle(&motor_data[4], INIT_YAW, vmax/max_angle,0,0);
-			Motor_pid_set_angle(&motor_data[5], INIT_PITCH, vmax/max_angle,0,0);
+			Motor_pid_set_angle(&motor_data[5], FRONT_ANGLE, vmax/max_angle,0,0);
 			osDelay(1);
 			//continue; //Keep initializing until its done
   }
 
   for(;;)
   {
-	  //Initialize the gimbal states
-	  //Maybe put it outside of for loop
+	  //Initialize the runtime angle maximums
+	  runtime_yaw_max=MAX_YAW;
+	  runtime_yaw_min=MIN_YAW;
+	  if (pitch_state==PITCH_FRONT){
+		  runtime_pitch_max=MAX_PITCH_FRONT;
+		  runtime_pitch_min=MIN_PITCH_FRONT;
+	  }
+	  else{
+		  runtime_pitch_max=MAX_PITCH_BACK;
+		  runtime_pitch_min=MIN_PITCH_BACK;
+	  }
 
 
 	  //comm_pack=parse_all(pdata);
@@ -93,21 +129,41 @@ void Gimbal_Task_Function(void const * argument)
 	  	   */
 	  	  if(comm_pack.target_num == 0){
 	  		  pitch_change_counter++;
+	  		  yaw_change_counter++;
 	  		  if (pitch_change_counter>MAX_PITCH_CHANGE_TIME*1000){
 	  			  patrol_dir=patrol_dir*-1;
 	  			  pitch_change_counter=0;
 	  		  }
 
+	  		  if(yaw_change_counter>MAX_YAW_CHANGE_TIME*1000){
+	  			  sweep_dir=sweep_dir*-1;
+	  			  yaw_change_counter=0;
+	  		  }
+
 	  		  if (patrol_dir==-1){
-	  			  Motor_pid_set_angle(&motor_data[5],FRONT_ANGLE,vmax/max_angle,0,0);
+	  			  pitch_state=PITCH_BACK;
+	  			  Motor_pid_set_angle(&motor_data[5],BACK_ANGLE,vmax/max_angle,0,0);
 	  			  HAL_GPIO_WritePin(GPIOG, LD_C_Pin, RESET);
 	  			  HAL_GPIO_WritePin(GPIOG, LD_D_Pin, SET);
 	  		  }
 	  		  else{
-	  			  Motor_pid_set_angle(&motor_data[5],BACK_ANGLE,vmax/max_angle,0,0);
+	  			  pitch_state=PITCH_FRONT;
+	  			  Motor_pid_set_angle(&motor_data[5],FRONT_ANGLE,vmax/max_angle,0,0);
 	  			  HAL_GPIO_WritePin(GPIOG, LD_D_Pin, RESET);
 	  			  HAL_GPIO_WritePin(GPIOG, LD_C_Pin, SET);
 	  		  }
+
+	  		  if(sweep_dir==-1){
+	  			Motor_pid_set_angle(&motor_data[4],runtime_yaw_max,0.2*vmax/max_angle,0,0);
+	  		  }
+	  		  else{
+	  			Motor_pid_set_angle(&motor_data[4],runtime_yaw_min,0.2*vmax/max_angle,0,0);
+	  		  }
+
+
+
+
+
 
 //	  		HAL_GPIO_WritePin(GPIOG, LD_C_Pin, RESET);
 //
@@ -131,7 +187,8 @@ void Gimbal_Task_Function(void const * argument)
 
 	  	  }
 	  	  else{
-	  		 pitch_change_counter=0; //If there is a target, restart pitch counter
+	  		 pitch_change_counter=0; //If there is a target, restart pitch and yaw counter
+	  		 yaw_change_counter=0;
 	//		  char* temp_pdata, temp;
 	//	  	  strcpy(temp_pdata, pdata);
 	//		  comm_pack=parse_all(temp_pdata);
@@ -142,6 +199,44 @@ void Gimbal_Task_Function(void const * argument)
 				  //buzzer_play_c1(500);
 				  //printf("InsideTask -> Yaw: %d;\t Pitch: %d; \t%s\r\n", (int16_t)angle_preprocess(&motor_data[4], comm_pack.yaw_data), (int16_t)angle_preprocess(&motor_data[5], comm_pack.pitch_data), pdata);
 				  // Guess the following function should be called only if the pack is correct?
+
+				  if (check_angle_out_of_range(abs_yaw,runtime_yaw_max,runtime_yaw_min)){
+
+					  if(abs(abs_yaw-runtime_yaw_max)<abs(abs_yaw-runtime_yaw_min)){ //Find the closer bound
+						  abs_yaw=runtime_yaw_max;
+					  }
+					  else{
+						  abs_yaw=runtime_yaw_min;
+					  }
+
+				  }
+
+				  if (check_angle_out_of_range(abs_pitch,runtime_pitch_max,runtime_pitch_min)){
+
+					  if(abs(abs_pitch-runtime_pitch_max)<abs(abs_pitch-runtime_pitch_min)){ //Find the closer bound
+						  abs_pitch=runtime_pitch_max;
+					  }
+					  else{
+						  abs_pitch=runtime_pitch_min;
+					  }
+
+				  }
+
+
+//				  if ((check_angle_greater_than_max(abs_yaw,runtime_yaw_max))){
+//					  abs_yaw=runtime_yaw_max;
+//				  }
+//				  if((check_angle_smaller_than_min(abs_yaw,runtime_yaw_min))){
+//					  abs_yaw=runtime_yaw_min;
+//				  }
+//
+//				  if((check_angle_greater_than_max(abs_pitch,runtime_pitch_max))){
+//					  abs_pitch=runtime_pitch_max;
+//				  }
+//				  if((check_angle_smaller_than_min(abs_pitch,runtime_pitch_min))){
+//					  abs_pitch=runtime_pitch_min;
+//				  }
+
 				  Motor_pid_set_angle(&motor_data[4], abs_yaw, vmax/max_angle,0,0);
 				  Motor_pid_set_angle(&motor_data[5], abs_pitch, vmax/max_angle,0,0);
 			  }
@@ -194,6 +289,77 @@ double angle_preprocess(Motor* motor, int16_t recieved_angle){
 	target_angle=(8192+target_angle) % 8192;
 
 	return (double)(target_angle*360/8192);
+}
+int16_t check_angle_over_zero(int16_t min_angle, int16_t max_angle){
+	if (min_angle < 0 || max_angle > 360){
+		return OVER_ZERO;
+	}
+	return NOT_OVER_ZERO;
+}
+
+int16_t check_angle_greater_than_max(int32_t input_angle, int16_t max_angle, int16_t min_angle){
+	//Assume we will not be given inputs more than 180 degrees over the max
+	if ((max_angle+180)>360){ //Over the origin
+		if (input_angle>max_angle || (input_angle>0 && (input_angle < max_angle+180-360))){
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
+	else{
+		if (input_angle > max_angle && input_angle < min_angle){ //not over the origin
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
+
+}
+
+int16_t check_angle_out_of_range(int32_t input_angle, int16_t max_angle, int16_t min_angle){
+
+	if (min_angle<max_angle){ //Not over origin
+
+		if (input_angle > max_angle || input_angle < min_angle){
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
+	else{ //over origin
+
+		if((input_angle > max_angle && input_angle < min_angle)){
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
+
+}
+
+int16_t check_angle_smaller_than_min(int32_t input_angle, int16_t max_angle, int16_t min_angle){
+	//Assume we will not be given inputs more than 180 degrees smaller than the min
+	if (min_angle-180<0){ //Over the origin
+		if (input_angle<min_angle || (input_angle<360 && (input_angle > min_angle-180+360))){
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
+	else{
+		if (input_angle < min_angle && input_angle > max_angle){ //not over the origin
+			return 1;
+		}
+		else{
+			return 0;
+		}
+	}
+
 }
 
 void SweepAndPatrol(void){

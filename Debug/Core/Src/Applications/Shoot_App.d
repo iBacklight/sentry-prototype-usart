@@ -48,7 +48,8 @@ Core/Src/Applications/Shoot_App.o: ../Core/Src/Applications/Shoot_App.c \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
  ../Core/Src/Applications/../buzzer.h \
  ../Core/Src/Applications/../Device/Motor.h ../Core/Inc/can.h \
- ../Core/Inc/main.h ../Core/Inc/../Src/Device/Motor.h
+ ../Core/Inc/main.h ../Core/Inc/../Src/Device/Motor.h \
+ ../Core/Src/Applications/Gimbal_App.h
 
 ../Core/Src/Applications/Shoot_App.h:
 
@@ -155,3 +156,5 @@ Core/Src/Applications/Shoot_App.o: ../Core/Src/Applications/Shoot_App.c \
 ../Core/Inc/main.h:
 
 ../Core/Inc/../Src/Device/Motor.h:
+
+../Core/Src/Applications/Gimbal_App.h:
