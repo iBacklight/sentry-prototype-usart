@@ -25,13 +25,13 @@
 #define PITCH_BACK -1
 
 //These are ABSOLUTE ANGLES, calibrate manually.
-#define INIT_YAW 0
+#define INIT_YAW 60
 #define INIT_PITCH 0
 #define YAW_MAX_HALF_DELTA 45
 #define PITCH_MAX_HALF_DELTA 45
 #define MAX_PITCH_CHANGE_TIME 5
 #define MAX_YAW_CHANGE_TIME 3
-#define FRONT_ANGLE 80 //Hard set front and back angles
+#define FRONT_ANGLE 140 //Hard set front and back angles
 #define BACK_ANGLE 280
 
 #define YAW_POS 6

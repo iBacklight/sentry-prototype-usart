@@ -142,13 +142,13 @@ void Gimbal_Task_Function(void const * argument)
 
 	  		  if (patrol_dir==-1){
 	  			  pitch_state=PITCH_BACK;
-	  			  Motor_pid_set_angle(&motor_data[5],BACK_ANGLE,vmax/max_angle,0,0);
+	  			  Motor_pid_set_angle(&motor_data[5],BACK_ANGLE,0.5*vmax/max_angle,0,0);
 	  			  HAL_GPIO_WritePin(GPIOG, LD_C_Pin, RESET);
 	  			  HAL_GPIO_WritePin(GPIOG, LD_D_Pin, SET);
 	  		  }
 	  		  else{
 	  			  pitch_state=PITCH_FRONT;
-	  			  Motor_pid_set_angle(&motor_data[5],FRONT_ANGLE,vmax/max_angle,0,0);
+	  			  Motor_pid_set_angle(&motor_data[5],FRONT_ANGLE,0.5*vmax/max_angle,0,0);
 	  			  HAL_GPIO_WritePin(GPIOG, LD_D_Pin, RESET);
 	  			  HAL_GPIO_WritePin(GPIOG, LD_C_Pin, SET);
 	  		  }
@@ -410,7 +410,7 @@ int32_t parse_pack_indv(char* pack, int pos, int lens){
 	    int32_t data = 0;
 	    memcpy(pdata_temp, pack, PACKLEN);
 
-	    if (pdata_temp[0] == 0x41){ //check received correct pack head frame， modify here to 0xAA in real world test
+	    if (pdata_temp[0] == 0xAA){ //check received correct pack head frame， modify here to 0xAA in real world test, 0x41 for tests in 'A'.
 			for(int i=0; i<lens; i++){
 	            data += (int32_t)((pdata_temp[pos-i-1] - '0')*pow(10,i)); // decoding, referring to the vision code.
 			}
@@ -445,7 +445,7 @@ comm_rx_info parse_pack_string(char* pack)
 
     if (strlen(pack) == PACKLEN)
     {
-        if (pack[0] == 0x41)
+        if (pack[0] == 0xAA)
         {
             for (int i = 2; i< PACKLEN-1; i++)
             {
@@ -540,7 +540,7 @@ comm_rx_info parse_all(char* pack)
 
 //	if (strlen(pack) == PACKLEN)
 //	{
-		if (pack[0] == 0x41) //start with 'A'
+		if (pack[0] == 0xAA) //start with 'A', use 0x41 for test, 0xAA for test with CE code
 		{
 			for (int i = 2; i< PACKLEN-1; i++)
 			{
