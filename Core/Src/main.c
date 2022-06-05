@@ -35,7 +35,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+//uint8_t UART6_rxBuffer_temp[12] = {0};
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/

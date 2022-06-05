@@ -49,6 +49,7 @@ UART_HandleTypeDef huart7;
 // NOTE: husart6 is only for test works with elder dev board.
 // For RM competition and latest A type board, use huart7
 UART_HandleTypeDef husart6;
+//extern char *pdata[PACKLEN+1];
 
 /* UART7 init function */
 void MX_UART7_Init(void)
@@ -85,7 +86,10 @@ void MX_USART6_Init(void)
     Error_Handler();
   }
   else{
-	HAL_UART_Receive_IT(&husart6, pdata, (PACKLEN+1));
+	HAL_UART_Receive_IT(&husart6, pdata, (PACKLEN));
+
+	  //HAL_UART_Receive_IT(&husart6, UART6_rxBuffer_temp, 12);
+	  //printf("sucessfully enabled uart6 \r\n");
   }
 }
 
@@ -129,15 +133,16 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
 	*/
 	GPIO_InitStruct.Pin = GPIO_PIN_14|GPIO_PIN_9;
 	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-	GPIO_InitStruct.Pull = GPIO_PULLUP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
 	GPIO_InitStruct.Alternate = GPIO_AF8_USART6;
 	HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
   /* USER CODE BEGIN UART7_MspInit 1 */
 	//USART6 Interrput Init
-	HAL_NVIC_SetPriority(USART6_IRQn,5,1);
+	HAL_NVIC_SetPriority(USART6_IRQn,5,0);
 	HAL_NVIC_EnableIRQ(USART6_IRQn);
+	printf("initialized usart 6 via the uart function");
   /* USER CODE END UART7_MspInit 1 */
   }
 }
@@ -176,6 +181,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
       PG9     ------> USART6_RX
       */
       HAL_GPIO_DeInit(GPIOG, GPIO_PIN_14|GPIO_PIN_9);
+      HAL_NVIC_DisableIRQ(USART6_IRQn);
     }
 }
 
