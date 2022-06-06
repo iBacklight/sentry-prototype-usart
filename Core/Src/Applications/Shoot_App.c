@@ -18,24 +18,17 @@ void Shoot_Task_Func(void const * argument)
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
   shoot_init();
-  double fric_wheel_speed_percent=50;
+  __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1,1050);
+  __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3,1050);
+  double fric_wheel_speed_percent=5;
   double mag_load_speed_percent=10;
   int16_t input=500;
-  buzzer_play_o_canada(300);
-
-  	osDelay(2000);
-	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1,1000);
-	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3,1000);
-	osDelay(2000);
-	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1,500);
-	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3,500);
-	osDelay(1750);
+  //buzzer_play_o_canada(300);
 
 
   for(;;)
   {
-//		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1,input);
-//		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3,input);
+
 //		input++;
 //
 //		if(input==1000){
@@ -70,13 +63,13 @@ void shoot_init(void){
 	HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_3);
 
-	osDelay(2000);
-	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1,MAX_PWM_ON_TIME);
-	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3,MAX_PWM_ON_TIME);
+	//osDelay(2000);
+	//__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1,MAX_PWM_ON_TIME);
+	//__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3,MAX_PWM_ON_TIME);
 	osDelay(2000);
 	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1,MIN_PWM_ON_TIME);
 	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3,MIN_PWM_ON_TIME);
-	osDelay(1750);
+	osDelay(2000);
 
 }
 
