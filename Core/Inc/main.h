@@ -99,6 +99,7 @@ void Error_Handler(void);
 /* USER CODE BEGIN Private defines */
 
 TIM_HandleTypeDef htim4;
+TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim12;
 
 CAN_HandleTypeDef hcan1;

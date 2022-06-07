@@ -101,6 +101,7 @@ int main(void)
   MX_GPIO_Init();
   MX_CAN1_Init();
   MX_TIM4_Init();
+  MX_TIM2_Init();
   MX_TIM12_Init();
   MX_UART7_Init();
   MX_USART6_Init();
