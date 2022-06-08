@@ -65,6 +65,15 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
+#define VCC_1_Pin GPIO_PIN_2
+#define VCC_1_GPIO_Port GPIOH
+#define VCC_2_Pin GPIO_PIN_3
+#define VCC_2_GPIO_Port GPIOH
+#define VCC_3_Pin GPIO_PIN_4
+#define VCC_3_GPIO_Port GPIOH
+#define VCC_4_Pin GPIO_PIN_5
+#define VCC_4_GPIO_Port GPIOH
+
 
 /* USER CODE END EFP */
 

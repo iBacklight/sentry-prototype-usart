@@ -105,12 +105,24 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LED_Green_GPIO_Port, &GPIO_InitStruct);
 
+  /* USER CODE BEGIN 2 */
+  //Configure voltage output pins
+  HAL_GPIO_WritePin(GPIOH, VCC_1_Pin|VCC_2_Pin|VCC_3_Pin|VCC_4_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pins : PHPin PHPin PHPin PHPin */
+  GPIO_InitStruct.Pin = VCC_1_Pin|VCC_2_Pin|VCC_3_Pin|VCC_4_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
+
+
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI2_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(EXTI2_IRQn);
 }
 
-/* USER CODE BEGIN 2 */
+
 
 
 
