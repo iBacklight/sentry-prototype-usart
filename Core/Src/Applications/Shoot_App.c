@@ -18,11 +18,15 @@ void Shoot_Task_Func(void const * argument)
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
   shoot_init();
-  __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1,1000);
-  __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1,1000);
-  osDelay(500);
-  __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1,1050);
-  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1,1050);
+//  __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1,1050);
+//  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1,1050);
+//  osDelay(3000);
+//  buzzer_play_o_canada(300);
+//	HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_1);
+//	HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_1);
+
+  //__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1,1050);
+  //__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1,1050);
   double fric_wheel_speed_percent=5;
   double mag_load_speed_percent=10;
   int16_t input=500;
@@ -37,7 +41,7 @@ void Shoot_Task_Func(void const * argument)
 //		if(input==1000){
 //			input=500;
 //		}
-	  //cmd_execute_shoot(mag_load_speed_percent,fric_wheel_speed_percent);
+	  cmd_execute_shoot(mag_load_speed_percent,fric_wheel_speed_percent);
 	  if(comm_pack.target_num ==1){
 		  buzzer_play_c1(100);
 		  cmd_execute_shoot(mag_load_speed_percent,fric_wheel_speed_percent);
@@ -78,6 +82,9 @@ void shoot_init(void){
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1,MIN_PWM_ON_TIME);
 	osDelay(6000);
 
+//	HAL_TIM_PWM_Stop(&htim4,TIM_CHANNEL_1);
+//	HAL_TIM_PWM_Stop(&htim2,TIM_CHANNEL_1);
+
 
 
 }
@@ -89,7 +96,7 @@ void fric_wheel_set_speed(double percent){
 	double input=MIN_PWM_ON_TIME+percent/100*(MAX_PWM_ON_TIME-MIN_PWM_ON_TIME);
 
 	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1,input);
-	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3,input);
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1,input);
 }
 
 //Shoot function, will spin magazine as well as friction wheels, the inputs represents speed in percent - 100 means 100% speed, 50 means 50% speed
