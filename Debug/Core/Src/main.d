@@ -51,7 +51,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Core/Src/Applications/../buzzer.h \
  ../Core/Src/Applications/../Device/Motor.h \
  ../Core/Src/Applications/Gimbal_App.h \
- ../Core/Src/Applications/Shoot_App.h ../Core/Src/buzzer.h
+ ../Core/Src/Applications/Shoot_App.h \
+ ../Core/Src/Applications/Gimbal_App.h ../Core/Src/buzzer.h
 
 ../Core/Inc/main.h:
 
@@ -170,5 +171,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Src/Applications/Gimbal_App.h:
 
 ../Core/Src/Applications/Shoot_App.h:
+
+../Core/Src/Applications/Gimbal_App.h:
 
 ../Core/Src/buzzer.h:

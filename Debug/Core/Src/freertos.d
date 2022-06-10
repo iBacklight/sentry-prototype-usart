@@ -51,6 +51,7 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
  ../Core/Inc/main.h ../Core/Inc/../Src/Device/Motor.h \
  ../Core/Src/Applications/Gimbal_App.h \
  ../Core/Src/Applications/Shoot_App.h \
+ ../Core/Src/Applications/Gimbal_App.h \
  ../Core/Src/Applications/Timer_App.h
 
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
@@ -162,5 +163,7 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
 ../Core/Src/Applications/Gimbal_App.h:
 
 ../Core/Src/Applications/Shoot_App.h:
+
+../Core/Src/Applications/Gimbal_App.h:
 
 ../Core/Src/Applications/Timer_App.h:
